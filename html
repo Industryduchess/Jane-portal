@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jane — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+
+/* ── TOKENS ── */
+:root {
+  --bg:          #edeae4;
+  --surface:     #f4f1eb;
+  --card:        #faf8f4;
+  --border:      rgba(100,90,80,0.14);
+  --border-med:  rgba(100,90,80,0.22);
+  --green:       #2d5a3d;
+  --green-light: #eef4f0;
+  --green-mid:   #4a7a5a;
+  --gold:        #c8920a;
+  --gold-light:  #fdf5e0;
+  --red:         #c84040;
+  --red-light:   #fdeaea;
+  --text-h:      #1e1c18;
+  --text:        #3e3830;
+  --text-muted:  #7a7268;
+  --text-faint:  #a09a92;
+  --nav-h:       52px;
+  --radius:      12px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  animation: bodyFade 0.5s ease forwards;
+}
+
+@keyframes bodyFade {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+/* ══ HEADER ══ */
+.header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--green);
+  padding: 20px 32px 16px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  animation: slideDown 0.4s ease forwards;
+}
+
+@keyframes slideDown {
+  from { opacity:0; transform:translateY(-12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.header-left { display:flex; flex-direction:column; gap:4px; }
+
+.header-eyebrow {
+  font-family: 'Lato', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--green);
+}
+
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text-h);
+  line-height: 1.1;
+}
+
+.header-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.header-date {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.5px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.5; transform:scale(0.85); }
+}
+
+/* ══ NAV ══ */
+.nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  padding: 0 28px;
+  gap: 0;
+  animation: slideDown 0.4s 0.05s ease both;
+}
+
+.nav-tab {
+  font-family: 'Lato', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 13px 16px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+
+.nav-tab:hover { color: var(--green-mid); }
+
+.nav-tab.active {
+  color: var(--green);
+  border-bottom-color: var(--green);
+}
+
+/* ══ BODY ══ */
+.body {
+  flex: 1;
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  grid-template-rows: auto auto 1fr;
+  gap: 18px;
+  animation: fadeUp 0.4s 0.1s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ══ CARDS ══ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-family: 'Lato', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background: var(--green);
+  border-radius: 3px;
+}
+
+.card-action {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.card-action:hover { opacity: 1; }
+
+/* ══ TASKS ══ */
+.tasks-card { grid-column: 1; grid-row: 1 / 3; }
+
+.tasks-body { padding: 6px 0; }
+
+.task-group-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 10px 18px 6px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.task:hover { background: rgba(45,90,61,0.04); }
+.task:last-child { border-bottom: none; }
+
+.task-check {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border-med);
+  flex-shrink: 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task:hover .task-check {
+  border-color: var(--green);
+}
+
+.task-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.task-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.task-text.urgent {
+  font-weight: 700;
+}
+
+.task-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.task-priority {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-faint);
+  letter-spacing: 0.3px;
+}
+
+/* ══ JANE BRIEFING ══ */
+.briefing-card { grid-column: 2; grid-row: 1; }
+
+.briefing-body { padding: 16px 18px 18px; }
+
+.briefing-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--green);
+  line-height: 1.75;
+  border-left: 3px solid var(--green);
+  padding-left: 14px;
+  margin-bottom: 16px;
+}
+
+.briefing-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 14px;
+}
+
+.briefing-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 10px;
+}
+
+.briefing-event {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.4;
+  border-bottom: 1px solid var(--border);
+}
+
+.briefing-event:last-child { border-bottom: none; }
+
+.event-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.event-meta {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+/* ══ METRICS ROW ══ */
+.metrics-row {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-h);
+  line-height: 1;
+}
+
+.metric-value span {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+}
+
+.metric-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ══ GRANT CARD ══ */
+.grant-card {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+}
+
+.grant-body { padding: 14px 0; }
+
+.grant-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.grant-item:hover { background: rgba(45,90,61,0.04); }
+.grant-item:last-child { border-bottom: none; }
+
+.grant-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--green-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.grant-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-h);
+  margin-bottom: 2px;
+}
+
+.grant-org {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.grant-amount {
+  margin-left: auto;
+  text-align: right;
+}
+
+.grant-amount-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.grant-deadline {
+  font-size: 10px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.grant-deadline.soon { color: var(--red); font-weight: 700; }
+
+/* ══ QUICK LOG ══ */
+.log-card {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: start;
+}
+
+.log-body { padding: 8px 0; }
+
+.log-item {
+  display: flex;
+  gap: 12px;
+  padding: 9px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.log-item:last-child { border-bottom: none; }
+
+.log-time {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-faint);
+  white-space: nowrap;
+  margin-top: 2px;
+  min-width: 44px;
+}
+
+/* ══ JANE BAR ══ */
+.jane-bar {
+  background: var(--surface);
+  border-top: 1px solid var(--border-med);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideUp 0.4s 0.15s ease both;
+}
+
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.jane-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.jane-input-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.jane-input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border-med);
+  border-radius: 24px;
+  padding: 9px 18px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text-muted);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.jane-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(45,90,61,0.1);
+  color: var(--text);
+}
+
+.jane-input::placeholder { color: var(--text-faint); }
+
+.jane-send {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 9px 22px;
+  font-family: 'Lato', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.jane-send:hover {
+  background: #1f4029;
+  transform: translateY(-1px);
+}
+
+.jane-send:active { transform: translateY(0); }
+
+.jane-shortcuts {
+  display: flex;
+  gap: 8px;
+}
+
+.shortcut-chip {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  background: var(--green-light);
+  border: 1px solid rgba(45,90,61,0.18);
+  border-radius: 14px;
+  padding: 5px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+
+.shortcut-chip:hover {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-eyebrow">LDRC · Command Center</div>
+    <div class="header-title">Good morning, <em>Jerika</em></div>
+  </div>
+  <div class="header-right">
+    <div class="header-date">Monday, March 9</div>
+    <div class="header-status">
+      <div class="status-dot"></div>
+      Jane is ready
+    </div>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-tab active">Overview</div>
+  <div class="nav-tab">Jane</div>
+  <div class="nav-tab">Grants</div>
+  <div class="nav-tab">Tasks</div>
+  <div class="nav-tab">Events</div>
+  <div class="nav-tab">Reports</div>
+  <div class="nav-tab">Realty</div>
+</nav>
+
+<!-- ── BODY ── -->
+<div class="body">
+
+  <!-- TASKS -->
+  <div class="card tasks-card">
+    <div class="card-header">
+      <div class="card-title">Today's Tasks</div>
+      <div class="card-action">+ Add task</div>
+    </div>
+    <div class="tasks-body">
+
+      <div class="task-group-label">Priority</div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:var(--red);"></div>
+        <div class="task-text urgent">Zoning meeting prep — Wawa notes</div>
+        <div class="task-tag" style="background:var(--red-light);color:var(--red);">Urgent</div>
+      </div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:var(--gold);"></div>
+        <div class="task-text">Follow up with Mariah re: meeting</div>
+        <div class="task-tag" style="background:var(--gold-light);color:var(--gold);">LDRC</div>
+      </div>
+
+      <div class="task-group-label">This Week</div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:var(--green);"></div>
+        <div class="task-text">Submit T-Mobile grant application</div>
+        <div class="task-tag" style="background:var(--green-light);color:var(--green);">Grants</div>
+      </div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:var(--green-mid);"></div>
+        <div class="task-text">Draft March newsletter</div>
+        <div class="task-tag" style="background:var(--green-light);color:var(--green-mid);">LDRC</div>
+      </div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:#8a8078;"></div>
+        <div class="task-text">Update Coldwell Banker listings — spring photos</div>
+        <div class="task-tag" style="background:#f4f2ee;color:#8a8078;">Realty</div>
+      </div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:var(--green);"></div>
+        <div class="task-text">Build Jane's 8am morning briefing automation</div>
+        <div class="task-tag" style="background:var(--green-light);color:var(--green);">Jane</div>
+      </div>
+
+      <div class="task">
+        <div class="task-check"></div>
+        <div class="task-dot" style="background:#8a8078;"></div>
+        <div class="task-text">Highway 80 walkability advocacy — talking points</div>
+        <div class="task-tag" style="background:#f4f2ee;color:#8a8078;">LDRC</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JANE BRIEFING -->
+  <div class="card briefing-card">
+    <div class="card-header">
+      <div class="card-title">Jane's Briefing</div>
+    </div>
+    <div class="briefing-body">
+      <div class="briefing-quote">
+        "3 deadlines this week. T-Mobile grant closes Friday — I've drafted the narrative. Mariah's team hasn't responded; I'll flag if nothing by noon."
+      </div>
+      <hr class="briefing-divider">
+      <div class="briefing-section-label">Upcoming</div>
+      <div class="briefing-events">
+        <div style="font-size:12px;color:var(--text-faint);font-style:italic;">Loading events…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div>
+        <div class="metric-label">Open Tasks</div>
+        <div class="metric-value"><span class="metric-tasks-count">—</span> <span>open</span></div>
+      </div>
+      <div class="metric-badge metric-tasks-badge" style="background:var(--gold-light);color:var(--gold);">—</div>
+    </div>
+    <div class="metric-card">
+      <div>
+        <div class="metric-label">Active Grants</div>
+        <div class="metric-value"><span class="metric-grants-count">—</span> <span>tracked</span></div>
+      </div>
+      <div class="metric-badge" style="background:var(--green-light);color:var(--green);">pipeline</div>
+    </div>
+  </div>
+
+  <!-- GRANTS -->
+  <div class="card grant-card">
+    <div class="card-header">
+      <div class="card-title">Grant Pipeline</div>
+      <div class="card-action">View all</div>
+    </div>
+    <div class="grant-body">
+      <div class="grant-item">
+        <div class="grant-icon">📱</div>
+        <div>
+          <div class="grant-name">T-Mobile Hometown Grant</div>
+          <div class="grant-org">T-Mobile · Community Development</div>
+        </div>
+        <div class="grant-amount">
+          <div class="grant-amount-val">$50,000</div>
+          <div class="grant-deadline soon">Due in 4 days</div>
+        </div>
+      </div>
+      <div class="grant-item">
+        <div class="grant-icon">🏛️</div>
+        <div>
+          <div class="grant-name">FDOT Transportation Alternative</div>
+          <div class="grant-org">Florida DOT · Walkability</div>
+        </div>
+        <div class="grant-amount">
+          <div class="grant-amount-val">$200,000</div>
+          <div class="grant-deadline">Due Apr 15</div>
+        </div>
+      </div>
+      <div class="grant-item">
+        <div class="grant-icon">🌱</div>
+        <div>
+          <div class="grant-name">Main Street America Vitality</div>
+          <div class="grant-org">NPS · Downtown Revitalization</div>
+        </div>
+        <div class="grant-amount">
+          <div class="grant-amount-val">$25,000</div>
+          <div class="grant-deadline">Due May 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="card log-card">
+    <div class="card-header">
+      <div class="card-title">Recent Activity</div>
+    </div>
+    <div class="log-body">
+      <div class="log-item">
+        <div class="log-time">9:14am</div>
+        <div>Jane drafted T-Mobile grant narrative — ready for review</div>
+      </div>
+      <div class="log-item">
+        <div class="log-time">8:02am</div>
+        <div>Morning briefing generated · 3 items flagged</div>
+      </div>
+      <div class="log-item">
+        <div class="log-time">Fri</div>
+        <div>Zoning notes added — Wawa downtown conflict</div>
+      </div>
+      <div class="log-item">
+        <div class="log-time">Fri</div>
+        <div>Portal deployed · Supabase connected</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── JANE BAR ── -->
+<div class="jane-bar">
+  <div class="jane-avatar">J</div>
+  <div class="jane-shortcuts">
+    <div class="shortcut-chip">☀️ Briefing</div>
+    <div class="shortcut-chip">🔍 Find grants</div>
+    <div class="shortcut-chip">📋 Draft email</div>
+  </div>
+  <div class="jane-input-wrap">
+    <input class="jane-input" placeholder="Ask Jane anything…" type="text">
+  </div>
+  <button class="jane-send">Send</button>
+</div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const SUPABASE_URL  = 'https://fzyvfdlmfeycntkjbshc.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eXZmZGxtZmV5Y250a2pic2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTYyNjEsImV4cCI6MjA4NzY5MjI2MX0.Ez6ZVG06kPsU-R00yuqXS_MU2K4akEweB5wtwja_pKo';
+  const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  // ── LIVE CLOCK ──
+  function updateClock() {
+    const now = new Date();
+    const opts = { weekday:'long', month:'long', day:'numeric' };
+    document.querySelector('.header-date').textContent = now.toLocaleDateString('en-US', opts);
+  }
+  updateClock();
+
+  // ── NAV TABS ──
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // ── CATEGORY COLOR MAP ──
+  const catColors = {
+    'LDRC':    { bg: 'var(--gold-light)',  text: 'var(--gold)' },
+    'Grants':  { bg: 'var(--green-light)', text: 'var(--green)' },
+    'Realty':  { bg: '#f4f2ee',            text: '#8a8078' },
+    'Jane':    { bg: 'var(--green-light)', text: 'var(--green-mid)' },
+    'Urgent':  { bg: 'var(--red-light)',   text: 'var(--red)' },
+    'Personal':{ bg: '#f0eaf8',            text: '#7a5a9a' },
+  };
+
+  function tagStyle(cat) {
+    const c = catColors[cat] || { bg: '#f0f0ee', text: '#888' };
+    return `background:${c.bg};color:${c.text};`;
+  }
+
+  function dotColor(cat, priority) {
+    if (priority === 'urgent' || priority === 'high') return 'var(--red)';
+    const c = catColors[cat];
+    return c ? c.text : '#8a8078';
+  }
+
+  // ── RENDER TASKS ──
+  function renderTasks(tasks) {
+    const body = document.querySelector('.tasks-body');
+    if (!tasks || tasks.length === 0) {
+      body.innerHTML = '<div style="padding:20px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">No tasks found.</div>';
+      return;
+    }
+
+    const priority = tasks.filter(t => t.priority === 'urgent' || t.priority === 'high');
+    const rest     = tasks.filter(t => t.priority !== 'urgent' && t.priority !== 'high');
+
+    let html = '';
+
+    if (priority.length) {
+      html += `<div class="task-group-label">Priority</div>`;
+      priority.forEach(t => html += taskHTML(t));
+    }
+    if (rest.length) {
+      html += `<div class="task-group-label">This Week</div>`;
+      rest.forEach(t => html += taskHTML(t));
+    }
+
+    body.innerHTML = html;
+
+    // Update metrics
+    const openCount = tasks.filter(t => !t.completed).length;
+    const urgentCount = tasks.filter(t => (t.priority === 'urgent' || t.priority === 'high') && !t.completed).length;
+    document.querySelector('.metric-tasks-count').textContent = openCount;
+    document.querySelector('.metric-tasks-badge').textContent = urgentCount + ' urgent';
+
+    attachTaskHandlers();
+  }
+
+  function taskHTML(t) {
+    const cat = t.category || t.tag || 'LDRC';
+    const isUrgent = t.priority === 'urgent' || t.priority === 'high';
+    const dc = dotColor(cat, t.priority);
+    return `
+      <div class="task" data-id="${t.id}" data-completed="${t.completed || false}">
+        <div class="task-check" style="${t.completed ? 'background:var(--green);border-color:var(--green);' : ''}">
+          ${t.completed ? '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : ''}
+        </div>
+        <div class="task-dot" style="background:${dc};"></div>
+        <div class="task-text ${isUrgent ? 'urgent' : ''}" style="${t.completed ? 'text-decoration:line-through;opacity:0.45;' : ''}">${t.title || t.task || ''}</div>
+        <div class="task-tag" style="${tagStyle(cat)}">${cat}</div>
+      </div>`;
+  }
+
+  function attachTaskHandlers() {
+    document.querySelectorAll('.task').forEach(task => {
+      task.addEventListener('click', async () => {
+        const id = task.dataset.id;
+        const completed = task.dataset.completed === 'true';
+        const newVal = !completed;
+
+        // Optimistic UI
+        const check = task.querySelector('.task-check');
+        const text  = task.querySelector('.task-text');
+        task.dataset.completed = newVal;
+        if (newVal) {
+          check.style.background = 'var(--green)';
+          check.style.borderColor = 'var(--green)';
+          check.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+          text.style.textDecoration = 'line-through';
+          text.style.opacity = '0.45';
+        } else {
+          check.style.background = '';
+          check.style.borderColor = '';
+          check.innerHTML = '';
+          text.style.textDecoration = '';
+          text.style.opacity = '';
+        }
+
+        // Persist to Supabase
+        await db.from('tasks').update({ completed: newVal }).eq('id', id);
+      });
+    });
+  }
+
+  // ── RENDER EVENTS ──
+  function renderEvents(events) {
+    const body = document.querySelector('.briefing-events');
+    if (!events || events.length === 0) {
+      body.innerHTML = '<div style="font-size:12px;color:var(--text-faint);font-style:italic;">No upcoming events.</div>';
+      return;
+    }
+    body.innerHTML = events.slice(0, 4).map(e => {
+      const d = e.date || e.start_date || e.event_date || '';
+      const dateStr = d ? new Date(d).toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' }) : '';
+      const isUrgent = e.urgent || false;
+      return `
+        <div class="briefing-event">
+          <div class="event-dot" style="background:${isUrgent ? 'var(--red)' : 'var(--green)'};"></div>
+          <div>
+            <div>${e.title || e.name || ''}</div>
+            <div class="event-meta" style="${isUrgent ? 'color:var(--red);' : ''}">${dateStr}${e.time ? ' · ' + e.time : ''}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── RENDER LOGS ──
+  function renderLogs(logs) {
+    const body = document.querySelector('.log-body');
+    if (!logs || logs.length === 0) {
+      body.innerHTML = '<div style="padding:16px 18px;font-size:12px;color:var(--text-faint);font-style:italic;">No activity yet.</div>';
+      return;
+    }
+    body.innerHTML = logs.slice(0, 5).map(l => {
+      const d = l.created_at || l.date || '';
+      const timeStr = d ? formatLogTime(new Date(d)) : '';
+      return `
+        <div class="log-item">
+          <div class="log-time">${timeStr}</div>
+          <div>${l.content || l.note || l.message || l.title || ''}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function formatLogTime(date) {
+    const now = new Date();
+    const diff = now - date;
+    const days = Math.floor(diff / 86400000);
+    if (days === 0) return date.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+    if (days === 1) return 'Yesterday';
+    if (days < 7)  return date.toLocaleDateString('en-US', { weekday:'short' });
+    return date.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+  }
+
+  // ── RENDER GRANTS ──
+  function renderGrants(grants) {
+    const body = document.querySelector('.grant-body');
+    if (!grants || grants.length === 0) {
+      body.innerHTML = '<div style="padding:16px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">No grants tracked yet.</div>';
+      // Update metric
+      document.querySelector('.metric-grants-count').textContent = '0';
+      return;
+    }
+    document.querySelector('.metric-grants-count').textContent = grants.length;
+
+    const icons = ['📱','🏛️','🌱','💼','🏗️','🌿'];
+    body.innerHTML = grants.slice(0, 4).map((g, i) => {
+      const deadline = g.deadline || g.due_date || g.close_date || '';
+      const daysLeft = deadline ? Math.ceil((new Date(deadline) - new Date()) / 86400000) : null;
+      const soon = daysLeft !== null && daysLeft <= 7;
+      const deadlineStr = deadline
+        ? (soon ? `Due in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}` : `Due ${new Date(deadline).toLocaleDateString('en-US', { month:'short', day:'numeric' })}`)
+        : '';
+      const amount = g.amount ? '$' + Number(g.amount).toLocaleString() : '';
+      return `
+        <div class="grant-item">
+          <div class="grant-icon">${icons[i % icons.length]}</div>
+          <div>
+            <div class="grant-name">${g.name || g.title || ''}</div>
+            <div class="grant-org">${g.organization || g.org || g.funder || ''}</div>
+          </div>
+          <div class="grant-amount">
+            <div class="grant-amount-val">${amount}</div>
+            <div class="grant-deadline ${soon ? 'soon' : ''}">${deadlineStr}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── LOADING STATES ──
+  function setLoading(selector, msg = 'Loading…') {
+    const el = document.querySelector(selector);
+    if (el) el.innerHTML = `<div style="padding:16px 18px;font-size:12px;color:var(--text-faint);font-style:italic;">${msg}</div>`;
+  }
+
+  function setError(selector, err) {
+    const el = document.querySelector(selector);
+    if (el) el.innerHTML = `<div style="padding:16px 18px;font-size:11px;color:var(--red);font-style:italic;">⚠ ${err}</div>`;
+  }
+
+  // ── LOAD ALL DATA ──
+  async function loadAll() {
+    setLoading('.tasks-body', 'Loading tasks…');
+    setLoading('.briefing-events', 'Loading events…');
+    setLoading('.log-body', 'Loading activity…');
+    setLoading('.grant-body', 'Loading grants…');
+
+    const today = new Date().toISOString().split('T')[0];
+
+    const [tasksRes, eventsRes, logsRes, grantsRes] = await Promise.all([
+      db.from('tasks').select('*').eq('completed', false).order('created_at', { ascending: false }).limit(20),
+      db.from('events').select('*').gte('date', today).order('date', { ascending: true }).limit(5),
+      db.from('logs').select('*').order('created_at', { ascending: false }).limit(5),
+      db.from('grants').select('*').order('deadline', { ascending: true }).limit(4),
+    ]);
+
+    if (tasksRes.error)  setError('.tasks-body',   tasksRes.error.message);
+    else                 renderTasks(tasksRes.data);
+
+    if (eventsRes.error) setError('.briefing-events', eventsRes.error.message);
+    else                 renderEvents(eventsRes.data);
+
+    if (logsRes.error)   setError('.log-body',     logsRes.error.message);
+    else                 renderLogs(logsRes.data);
+
+    if (grantsRes.error) setError('.grant-body',   grantsRes.error.message);
+    else                 renderGrants(grantsRes.data);
+  }
+
+  loadAll();
+
+  // ── REALTIME: tasks ──
+  db.channel('tasks-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
+      db.from('tasks').select('*').eq('completed', false).order('created_at', { ascending: false }).limit(20)
+        .then(({ data }) => { if (data) renderTasks(data); });
+    })
+    .subscribe();
+
+</script>
+
+</body>
+</html>
