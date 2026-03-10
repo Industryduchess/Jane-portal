@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jane — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#edeae4;--surface:#f4f1eb;--card:#faf8f4;
+  --border:rgba(100,90,80,0.14);--border-med:rgba(100,90,80,0.22);
+  --green:#2d5a3d;--green-light:#eef4f0;--green-mid:#4a7a5a;
+  --gold:#c8920a;--gold-light:#fdf5e0;--red:#c84040;--red-light:#fdeaea;
+  --text-h:#1e1c18;--text:#3e3830;--text-muted:#7a7268;--text-faint:#a09a92;--radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;}
+.header{background:var(--surface);border-bottom:2px solid var(--green);padding:20px 32px 16px;display:flex;align-items:flex-end;justify-content:space-between;}
+.header-eyebrow{font-size:10px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--green);}
+.header-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--text-h);}
+.header-title em{font-style:italic;color:var(--gold);}
+.header-date{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--text-muted);}
+.header-status{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--green);}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 28px;}
+.nav-tab{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);padding:13px 16px;border-bottom:2px solid transparent;cursor:pointer;transition:color 0.2s,border-color 0.2s;margin-bottom:-1px;}
+.nav-tab:hover{color:var(--green-mid);}
+.nav-tab.active{color:var(--green);border-bottom-color:var(--green);}
+.body{flex:1;padding:24px 28px;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto auto 1fr;gap:18px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.card-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:10px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
+.card-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--green);border-radius:3px;}
+.card-action{font-size:10px;font-weight:700;color:var(--green);cursor:pointer;opacity:0.7;}
+.tasks-card{grid-column:1;grid-row:1/3;}
+.tasks-body{padding:6px 0;}
+.task-group-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);padding:10px 18px 6px;}
+.task{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
+.task:hover{background:rgba(45,90,61,0.04);}
+.task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border-med);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.task:hover .task-check{border-color:var(--green);}
+.task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.task-text{flex:1;font-size:13px;color:var(--text);line-height:1.3;}
+.task-text.urgent{font-weight:700;}
+.task-tag{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+.briefing-card{grid-column:2;grid-row:1;}
+.briefing-body{padding:16px 18px 18px;}
+.briefing-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--green);line-height:1.75;border-left:3px solid var(--green);padding-left:14px;margin-bottom:16px;}
+.briefing-divider{border:none;border-top:1px solid var(--border);margin:0 0 14px;}
+.briefing-section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;}
+.briefing-event{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:12px;color:var(--text);border-bottom:1px solid var(--border);}
+.briefing-event:last-child{border-bottom:none;}
+.event-dot{width:6px;height:6px;border-radius:50%;background:var(--green);margin-top:5px;flex-shrink:0;}
+.event-meta{font-size:10px;color:var(--text-faint);font-weight:700;margin-top:1px;}
+.metrics-row{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:10px;}
+.metric-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
+.metric-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:4px;}
+.metric-value{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--text-h);line-height:1;}
+.metric-value span{font-size:13px;color:var(--text-muted);font-family:'Lato',sans-serif;font-weight:400;}
+.metric-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;}
+.grant-card{grid-column:1;grid-row:3;align-self:start;}
+.grant-body{padding:14px 0;}
+.grant-item{display:flex;align-items:center;gap:14px;padding:10px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
+.grant-item:hover{background:rgba(45,90,61,0.04);}
+.grant-item:last-child{border-bottom:none;}
+.grant-icon{width:36px;height:36px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.grant-name{font-size:13px;font-weight:700;color:var(--text-h);margin-bottom:2px;}
+.grant-org{font-size:11px;color:var(--text-muted);}
+.grant-amount{margin-left:auto;text-align:right;}
+.grant-amount-val{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--green);}
+.grant-deadline{font-size:10px;color:var(--text-faint);margin-top:2px;}
+.grant-deadline.soon{color:var(--red);font-weight:700;}
+.log-card{grid-column:2;grid-row:3;align-self:start;}
+.log-body{padding:8px 0;}
+.log-item{display:flex;gap:12px;padding:9px 18px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text);}
+.log-item:last-child{border-bottom:none;}
+.log-time{font-size:10px;font-weight:700;color:var(--text-faint);white-space:nowrap;margin-top:2px;min-width:44px;}
+.jane-bar{background:var(--surface);border-top:1px solid var(--border-med);padding:14px 28px;display:flex;align-items:center;gap:12px;}
+.jane-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:#fff;flex-shrink:0;}
+.jane-input-wrap{flex:1;}
+.jane-input{width:100%;background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:9px 18px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--text-muted);outline:none;transition:border-color 0.2s;}
+.jane-input:focus{border-color:var(--green);color:var(--text);}
+.jane-input::placeholder{color:var(--text-faint);}
+.jane-send{background:var(--green);color:#fff;border:none;border-radius:24px;padding:9px 22px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.jane-shortcuts{display:flex;gap:8px;}
+.shortcut-chip{font-size:10px;font-weight:700;color:var(--green);background:var(--green-light);border:1px solid rgba(45,90,61,0.18);border-radius:14px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+.shortcut-chip:hover{background:var(--green);color:#fff;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="header-eyebrow">LDRC · Command Center</div>
+    <div class="header-title">Good morning, <em>Jerika</em></div>
+  </div>
+  <div style="text-align:right;">
+    <div class="header-date" id="hdate"></div>
+    <div class="header-status"><div class="status-dot"></div>Jane is ready</div>
+  </div>
+</div>
+<nav class="nav">
+  <div class="nav-tab active">Overview</div>
+  <div class="nav-tab">Jane</div>
+  <div class="nav-tab">Grants</div>
+  <div class="nav-tab">Tasks</div>
+  <div class="nav-tab">Events</div>
+  <div class="nav-tab">Reports</div>
+  <div class="nav-tab">Realty</div>
+</nav>
+<div class="body">
+  <div class="card tasks-card">
+    <div class="card-header">
+      <div class="card-title">Today's Tasks</div>
+      <div class="card-action">+ Add task</div>
+    </div>
+    <div class="tasks-body" id="tasks-body"><div style="padding:20px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">Loading tasks…</div></div>
+  </div>
+  <div class="card briefing-card">
+    <div class="card-header"><div class="card-title">Jane's Briefing</div></div>
+    <div class="briefing-body">
+      <div class="briefing-quote">"3 deadlines this week. T-Mobile grant closes Friday — I've drafted the narrative. Mariah's team hasn't responded; I'll flag if nothing by noon."</div>
+      <hr class="briefing-divider">
+      <div class="briefing-section-label">Upcoming</div>
+      <div id="events-body"><div style="font-size:12px;color:var(--text-faint);font-style:italic;">Loading events…</div></div>
+    </div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div><div class="metric-label">Open Tasks</div><div class="metric-value"><span id="tasks-count">—</span> <span>open</span></div></div>
+      <div class="metric-badge" id="tasks-badge" style="background:var(--gold-light);color:var(--gold);">—</div>
+    </div>
+    <div class="metric-card">
+      <div><div class="metric-label">Active Grants</div><div class="metric-value"><span id="grants-count">—</span> <span>tracked</span></div></div>
+      <div class="metric-badge" style="background:var(--green-light);color:var(--green);">pipeline</div>
+    </div>
+  </div>
+  <div class="card grant-card">
+    <div class="card-header"><div class="card-title">Grant Pipeline</div><div class="card-action">View all</div></div>
+    <div class="grant-body" id="grants-body"><div style="padding:16px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">Loading grants…</div></div>
+  </div>
+  <div class="card log-card">
+    <div class="card-header"><div class="card-title">Recent Activity</div></div>
+    <div class="log-body" id="logs-body"><div style="padding:16px 18px;font-size:12px;color:var(--text-faint);font-style:italic;">Loading activity…</div></div>
+  </div>
+</div>
+<div class="jane-bar">
+  <div class="jane-avatar">J</div>
+  <div class="jane-shortcuts">
+    <div class="shortcut-chip">☀️ Briefing</div>
+    <div class="shortcut-chip">🔍 Find grants</div>
+    <div class="shortcut-chip">📋 Draft email</div>
+  </div>
+  <div class="jane-input-wrap"><input class="jane-input" placeholder="Ask Jane anything…" type="text"></div>
+  <button class="jane-send">Send</button>
+</div>
+<script>
+const SB='https://fzyvfdlmfeycntkjbshc.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eXZmZGxtZmV5Y250a2pic2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTYyNjEsImV4cCI6MjA4NzY5MjI2MX0.Ez6ZVG06kPsU-R00yuqXS_MU2K4akEweB5wtwja_pKo';
+const H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
+async function get(t,p){const r=await fetch(`${SB}/rest/v1/${t}?${p}`,{headers:H});return r.json();}
+async function patch(t,id,b){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify(b)});}
+const cats={'ldrc':{bg:'var(--gold-light)',tx:'var(--gold)'},'grants':{bg:'var(--green-light)',tx:'var(--green)'},'realty':{bg:'#f4f2ee',tx:'#8a8078'},'jane':{bg:'var(--green-light)',tx:'var(--green-mid)'},'urgent':{bg:'var(--red-light)',tx:'var(--red)'},'personal':{bg:'#f0eaf8',tx:'#7a5a9a'}};
+function cs(c){const x=cats[c.toLowerCase()]||{bg:'#f0f0ee',tx:'#888'};return `background:${x.bg};color:${x.tx};`;}
+function dc(c){const x=cats[c.toLowerCase()];return x?x.tx:'#8a8078';}
+function renderTasks(tasks){
+  const b=document.getElementById('tasks-body');
+  if(!tasks||!tasks.length){b.innerHTML='<div style="padding:20px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">No open tasks.</div>';return;}
+  const u=tasks.filter(t=>(t.cat||'').toLowerCase()==='urgent');
+  const r=tasks.filter(t=>(t.cat||'').toLowerCase()!=='urgent');
+  let h='';
+  if(u.length){h+='<div class="task-group-label">Priority</div>';u.forEach(t=>h+=th(t));}
+  if(r.length){h+='<div class="task-group-label">This Week</div>';r.forEach(t=>h+=th(t));}
+  b.innerHTML=h;
+  document.getElementById('tasks-count').textContent=tasks.length;
+  document.getElementById('tasks-badge').textContent=u.length+' urgent';
+  b.querySelectorAll('.task').forEach(task=>{
+    task.addEventListener('click',async()=>{
+      const id=task.dataset.id,done=task.dataset.done==='true',nv=!done;
+      task.dataset.done=nv;
+      const ck=task.querySelector('.task-check'),tx=task.querySelector('.task-text');
+      if(nv){ck.style.background='var(--green)';ck.style.borderColor='var(--green)';ck.innerHTML='<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';tx.style.textDecoration='line-through';tx.style.opacity='0.45';}
+      else{ck.style.cssText='';ck.innerHTML='';tx.style.cssText='';}
+      await patch('tasks',id,{done:nv});
+    });
+  });
+}
+function th(t){const c=t.cat||'ldrc',l=c.charAt(0).toUpperCase()+c.slice(1);return `<div class="task" data-id="${t.id}" data-done="false"><div class="task-check"></div><div class="task-dot" style="background:${dc(c)};"></div><div class="task-text ${c.toLowerCase()==='urgent'?'urgent':''}">${t.text||''}</div><div class="task-tag" style="${cs(c)}">${l}</div></div>`;}
+function renderEvents(ev){
+  const b=document.getElementById('events-body');
+  if(!ev||!ev.length){b.innerHTML='<div style="font-size:12px;color:var(--text-faint);font-style:italic;">No upcoming events.</div>';return;}
+  b.innerHTML=ev.slice(0,4).map(e=>{const d=e.date?new Date(e.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'';const u=(e.priority||'').toLowerCase()==='urgent';return `<div class="briefing-event"><div class="event-dot" style="background:${u?'var(--red)':'var(--green)'};"></div><div><div>${e.title||''}</div><div class="event-meta" style="${u?'color:var(--red);':''}">${d}</div></div></div>`;}).join('');
+}
+function renderLogs(logs){
+  const b=document.getElementById('logs-body');
+  if(!logs||!logs.length){b.innerHTML='<div style="padding:16px 18px;font-size:12px;color:var(--text-faint);font-style:italic;">No activity yet.</div>';return;}
+  const now=new Date();
+  b.innerHTML=logs.slice(0,5).map(l=>{let ts='';if(l.created_at){const d=new Date(l.created_at),days=Math.floor((now-d)/86400000);if(days===0)ts=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});else if(days===1)ts='Yesterday';else if(days<7)ts=d.toLocaleDateString('en-US',{weekday:'short'});else ts=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}return `<div class="log-item"><div class="log-time">${ts}</div><div>${l.text||''}</div></div>`;}).join('');
+}
+function renderGrants(grants){
+  const b=document.getElementById('grants-body');
+  document.getElementById('grants-count').textContent=grants?grants.length:'0';
+  if(!grants||!grants.length){b.innerHTML='<div style="padding:16px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">No grants tracked yet.</div>';return;}
+  const icons=['📱','🏛️','🌱','💼','🏗️','🌿'];
+  b.innerHTML=grants.slice(0,4).map((g,i)=>{const dl=g.deadline||g.due_date||'';const dy=dl?Math.ceil((new Date(dl)-new Date())/86400000):null;const soon=dy!==null&&dy<=7;const ds=dl?(soon?`Due in ${dy} day${dy!==1?'s':''}`:`Due ${new Date(dl).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`):'';const amt=g.amount?'$'+Number(g.amount).toLocaleString():'';return `<div class="grant-item"><div class="grant-icon">${icons[i%icons.length]}</div><div><div class="grant-name">${g.name||g.title||''}</div><div class="grant-org">${g.organization||g.org||''}</div></div><div class="grant-amount"><div class="grant-amount-val">${amt}</div><div class="grant-deadline ${soon?'soon':''}">${ds}</div></div></div>`;}).join('');
+}
+document.getElementById('hdate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');});});
+(async()=>{
+  const today=new Date().toISOString().split('T')[0];
+  const [tasks,events,logs,grants]=await Promise.all([
+    get('tasks','done=eq.false&order=created_at.desc&limit=20'),
+    get('events',`date=gte.${today}&order=date.asc&limit=5`),
+    get('logs','order=created_at.desc&limit=5'),
+    get('grants','order=deadline.asc&limit=4'),
+  ]);
+  renderTasks(Array.isArray(tasks)?tasks:[]);
+  renderEvents(Array.isArray(events)?events:[]);
+  renderLogs(Array.isArray(logs)?logs:[]);
+  renderGrants(Array.isArray(grants)?grants:[]);
+})();
+</script>
+</body>
+</html>
