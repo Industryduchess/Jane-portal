@@ -49,10 +49,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .jane-full-avatar{flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
 .jane-full-avatar.jane-av{background:var(--green);color:#fff;font-family:'Playfair Display',serif;font-style:italic;}
 .jane-full-avatar.you-av{background:var(--gold-light);color:var(--gold);}
-.jane-full-text{flex:1;font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;}
-.jane-full-text.jane-voice{font-family:'Playfair Display',serif;font-style:italic;}
+.jane-full-text{flex:1;font-size:14px;color:var(--text);line-height:1.75;white-space:pre-wrap;}
+.jane-full-text.jane-voice{color:var(--green);}
 .jane-full-input-row{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;}
-.jane-full-input{flex:1;background:var(--bg);border:1px solid var(--border-med);border-radius:24px;padding:10px 18px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.jane-full-input{flex:1;background:var(--bg);border:1px solid var(--border-med);border-radius:24px;padding:10px 18px;font-family:'Lato',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
 .jane-full-input:focus{border-color:var(--green);}
 .jane-full-send{background:var(--green);color:#fff;border:none;border-radius:24px;padding:10px 22px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
 .jane-shortcuts-row{display:flex;gap:8px;flex-wrap:wrap;}
@@ -101,7 +101,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .grant-amount{margin-left:auto;text-align:right;}
 .grant-amount-val{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--green);}
 .grant-deadline{font-size:10px;color:var(--text-faint);margin-top:2px;}
-.grant-deadline.soon}color:var(--red);font-weight:700;}
+.grant-deadline.soon{color:var(--red);font-weight:700;}
 .log-card{grid-column:2;grid-row:3;align-self:start;}
 .log-body{padding:8px 0;}
 .log-item{display:flex;gap:12px;padding:9px 18px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text);}
@@ -110,7 +110,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .jane-bar{background:var(--surface);border-top:1px solid var(--border-med);padding:14px 28px;display:flex;align-items:center;gap:12px;}
 .jane-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:#fff;flex-shrink:0;}
 .jane-input-wrap{flex:1;}
-.jane-input{width:100%;background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:9px 18px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--text-muted);outline:none;transition:border-color 0.2s;}
+.jane-input{width:100%;background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:9px 18px;font-family:'Lato',sans-serif;font-size:14px;color:var(--text-muted);outline:none;transition:border-color 0.2s;}
 .jane-input:focus{border-color:var(--green);color:var(--text);}
 .jane-input::placeholder{color:var(--text-faint);}
 .jane-send{background:var(--green);color:#fff;border:none;border-radius:24px;padding:9px 22px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
@@ -171,21 +171,24 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
     <div class="card-header"><div class="card-title">Grant Pipeline</div><div class="card-action">View all</div></div>
     <div class="grant-body" id="grants-body"><div style="padding:16px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">Loading grants…</div></div>
   </div>
-  <div clas="card log-card">
+  <div class="card log-card">
     <div class="card-header"><div class="card-title">Recent Activity</div></div>
     <div class="log-body" id="logs-body"><div style="padding:16px 18px;font-size:12px;color:var(--text-faint);font-style:italic;">Loading activity…</div></div>
   </div>
 </div>
-[div class="jane-page" id="jane-page">
-  <div>
-    <div class="jane-page-header">Good morning, <em>Jerika.</em> How can I help you today?</div>
-    <div class="jane-page-sub">I have access to your tasks, grants, events, and Gmail. Tell me what you need.</div>
+<div class="jane-page" id="jane-page">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+    <div>
+      <div class="jane-page-header">Good morning, <em>Jerika.</em> How can I help you today?</div>
+      <div class="jane-page-sub">I have access to your tasks, grants, events, and Gmail. Tell me what you need.</div>
+    </div>
+    <button onclick="clearJaneHistory()" style="flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);background:none;border:1px solid var(--border-med);border-radius:10px;padding:6px 12px;cursor:pointer;margin-top:4px;">Clear history</button>
   </div>
   <div class="jane-shortcuts-row">
     <div class="jane-sc" onclick="janeFullAsk('Give me my full morning briefing')">☀️ Morning briefing</div>
     <div class="jane-sc" onclick="janeFullAsk('What emails need my attention today?')">📬 Triage inbox</div>
     <div class="jane-sc" onclick="janeFullAsk('What grants should I be focused on right now?')">💰 Grant status</div>
-    <div class="jane-sc" onclick="janeFullAsk('Draft a professional follow-up email for me')">✍�️ Draft email</div>
+    <div class="jane-sc" onclick="janeFullAsk('Draft a professional follow-up email for me')">✍️ Draft email</div>
     <div class="jane-sc" onclick="janeFullAsk('What decisions do I need to make this week?')">🎯 Decisions needed</div>
     <div class="jane-sc" onclick="janeFullAsk('Help me prepare for my next meeting')">📋 Meeting prep</div>
   </div>
@@ -343,15 +346,46 @@ async function askJane(preset){
 janeInput.addEventListener('keydown',e=>{if(e.key==='Enter')askJane();});
 
 // Jane full page chat
+const CHAT_KEY='jane_chat_history';
 const janeFullInput=document.getElementById('jane-full-input');
 const janeFullMessages=document.getElementById('jane-full-messages');
-function addFullMessage(text,role){
+
+function saveJaneHistory(){
+  const msgs=[];
+  janeFullMessages.querySelectorAll('.jane-full-message').forEach(m=>{
+    const isJane=m.querySelector('.jane-av');
+    const txt=m.querySelector('.jane-full-text');
+    if(txt)msgs.push({role:isJane?'jane':'user',text:txt.textContent});
+  });
+  try{localStorage.setItem(CHAT_KEY,JSON.stringify(msgs));}catch(e){}
+}
+
+function loadJaneHistory(){
+  try{
+    const saved=localStorage.getItem(CHAT_KEY);
+    if(!saved)return;
+    const msgs=JSON.parse(saved);
+    if(!msgs||!msgs.length)return;
+    janeFullMessages.innerHTML='';
+    msgs.forEach(m=>addFullMessage(m.text,m.role,false));
+  }catch(e){}
+}
+
+function clearJaneHistory(){
+  try{localStorage.removeItem(CHAT_KEY);}catch(e){}
+  janeFullMessages.innerHTML='';
+  addFullMessage("I'm here, Jerika. You have 20 open tasks, one meeting Thursday at City Hall, and your inbox is waiting. Where do you want to start?",'jane',false);
+}
+
+function addFullMessage(text,role,save=true){
   const wrap=document.createElement('div');wrap.className='jane-full-message';
   const av=document.createElement('div');av.className=`jane-full-avatar ${role==='jane'?'jane-av':'you-av'}`;av.textContent=role==='jane'?'J':'You';
   const msg=document.createElement('div');msg.className=`jane-full-text${role==='jane'?' jane-voice':''}`;msg.textContent=text;
   wrap.appendChild(av);wrap.appendChild(msg);janeFullMessages.appendChild(wrap);
   janeFullMessages.scrollTop=janeFullMessages.scrollHeight;
+  if(save)saveJaneHistory();
 }
+
 async function janeFullAsk(preset){
   const msg=preset||janeFullInput.value.trim();if(!msg)return;
   janeFullInput.value='';
@@ -364,7 +398,9 @@ async function janeFullAsk(preset){
     const data=await res.json();thinking.remove();addFullMessage(data.reply||'Something went wrong.','jane');
   }catch(e){thinking.remove();addFullMessage('I had trouble connecting. Please try again.','jane');}
 }
+
 janeFullInput.addEventListener('keydown',e=>{if(e.key==='Enter')janeFullAsk();});
+loadJaneHistory();
 (async()=>{
   const today=new Date().toISOString().split('T')[0];
   const [tasks,events,logs,grants]=await Promise.all([
