@@ -60,13 +60,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .jane-sc:hover{background:var(--green);color:#fff;}
 .body{flex:1;padding:24px 28px;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto auto 1fr;gap:18px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.card-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-header{padding:14px 18px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .card-title{font-size:10px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
 .card-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--green);border-radius:3px;}
 .card-action{font-size:10px;font-weight:700;color:var(--green);cursor:pointer;opacity:0.7;}
 .tasks-card{grid-column:1;grid-row:1/3;}
 .tasks-body{padding:6px 0;}
-.task-group-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);padding:10px 18px 6px;}
+.task-group-label{font-size:9px;font-weight:700;letter-spacing:20px;text-transform:uppercase;color:var(--text-faint);padding:10px 18px 6px;}
 .task{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .task:hover{background:rgba(45,90,61,0.04);}
 .task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border-med);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
@@ -106,7 +106,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .log-body{padding:8px 0;}
 .log-item{display:flex;gap:12px;padding:9px 18px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text);}
 .log-item:last-child{border-bottom:none;}
-.log-time{font-size:10px;font-weight:700;color:var(--text-faint);white-space:nowraw;margin-top:2px;min-width:44px;}
+.log-time{font-size:10px;font-weight:700;color:var(--text-faint);white-space:nowrap;margin-top:2px;min-width:44px;}
 .jane-bar{background:var(--surface);border-top:1px solid var(--border-med);padding:14px 28px;display:flex;align-items:center;gap:12px;}
 .jane-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:#fff;flex-shrink:0;}
 .jane-input-wrap{flex:1;}
@@ -117,6 +117,48 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .jane-shortcuts{display:flex;gap:8px;}
 .shortcut-chip{font-size:10px;font-weight:700;color:var(--green);background:var(--green-light);border:1px solid rgba(45,90,61,0.18);border-radius:14px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
 .shortcut-chip:hover{background:var(--green);color:#fff;}
+/* ── Contacts Page ───────────────────────────────────────────────────────── */
+.contacts-page{display:none;flex-direction:column;flex:1;padding:28px;gap:18px;}
+.contacts-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.contacts-search{background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:9px 18px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);outline:none;width:220px;transition:border-color 0.2s;}
+.contacts-search:focus{border-color:var(--green);}
+.contacts-filter-sel{background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:8px 14px;font-family:'Lato',sans-serif;font-size:12px;color:var(--text);outline:none;cursor:pointer;}
+.contacts-add-btn{background:var(--green);color:#fff;border:none;border-radius:24px;padding:9px 20px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+.contacts-add-btn:hover{opacity:0.88;}
+.contacts-grid{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.contacts-header-row{display:grid;grid-template-columns:2fr 1.6fr 1.1fr 0.9fr 1.8fr 1.1fr 0.4fr;padding:10px 18px;background:var(--green-light);border-bottom:1px solid var(--border);}
+.contacts-col-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);}
+.contact-row{display:grid;grid-template-columns:2fr 1.6fr 1.1fr 0.9fr 1.8fr 1.1fr 0.4fr;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;align-items:center;}
+.contact-row:last-child{border-bottom:none;}
+.contact-row:hover{background:rgba(45,90,61,0.04);}
+.contact-name-cell{display:flex;align-items:center;gap:10px;}
+.contact-initials{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.contact-name{font-size:13px;font-weight:700;color:var(--text-h);}
+.contact-sub{font-size:11px;color:var(--text-muted);}
+.contact-badge{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;display:inline-block;}
+.contact-cell{font-size:12px;color:var(--text-muted);}
+.contact-edit-link{font-size:11px;font-weight:700;color:var(--green);opacity:0.6;}
+.contact-row:hover .contact-edit-link{opacity:1;}
+/* ── Contact Modal ───────────────────────────────────────────────────────── */
+.contact-modal-overlay{position:fixed;inset:0;background:rgba(30,28,24,0.48);z-index:100;display:none;}
+.contact-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);width:660px;max-width:96vw;max-height:92vh;overflow-y:auto;z-index:101;display:none;padding:28px;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;morgin-bottom:22px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--text-h);}
+.modal-close{font-size:24px;color:var(--text-faint);cursor:pointer;background:none;border:none;line-height:1;padding:0;}
+.modal-section{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin:16px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px;}
+.modal-field{display:flex;flex-direction:column;gap:5px;}
+.modal-field.full{grid-column:1/-1;}
+.modal-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);}
+.modal-input,.modal-select,.modal-textarea{background:var(--bg);border:1px solid var(--border-med);border-radius:8px;padding:8px 12px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s;width:100%;}
+.modal-input:focus,.modal-textarea:focus{border-color:var(--green);}
+.modal-textarea{resize:vertical;min-height:70px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--border);}
+.mbtn{padding:9px 22px;border-radius:24px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;}
+.mbtn.primary{background:var(--green);color:#fff;}
+.mbtn.secondary{background:none;color:var(--text-muted);border:1px solid var(--border-med);}
+.mbtn.danger{background:none;color:var(--red);border:1px solid rgba(200,64,64,0.3);}
+.mbtn.today{background:var(--gold);color:#fff;}
 </style>
 </head>
 <body>
@@ -136,6 +178,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   <div class="nav-tab">Grants</div>
   <div class="nav-tab">Tasks</div>
   <div class="nav-tab">Events</div>
+  <div class="nav-tab">Contacts</div>
   <div class="nav-tab">Reports</div>
   <div class="nav-tab">Realty</div>
 </nav>
@@ -205,6 +248,111 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
     </div>
   </div>
 </div>
+<!-- ── Contacts Page ─────────────────────────────────────────────────────── -->
+<div class="contacts-page" id="contacts-page">
+  <div class="contacts-toolbar">
+    <div>
+      <div class="jane-page-header">Contacts</div>
+      <div class="jane-page-sub" id="contacts-count-label">Loading…</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <input class="contacts-search" id="contacts-search" placeholder="Search name, org, email…" type="text" oninput="filterContacts()">
+      <select class="contacts-filter-sel" id="contacts-filter-type" onchange="filterContacts()">
+        <option value="">All Types</option>
+        <option>Board Member</option><option>City Official</option><option>County Official</option>
+        <option>State/Federal Official</option><option>Vendor</option><option>Sponsor</option>
+        <option>Donor</option><option>Media</option><option>Community Partner</option>
+        <option>Volunteer</option><option>Grant Contact</option><option>Business Owner</option>
+        <option>Resident</option><option>Other</option>
+      </select>
+      <select class="contacts-filter-sel" id="contacts-filter-status" onchange="filterContacts()">
+        <option value="">All Statuses</option>
+        <option>Active</option><option>Inactive</option><option>Prospect</option><option>VIP</option>
+      </select>
+      <button class="contacts-add-btn" onclick="openContactModal()">+ Add Contact</button>
+    </div>
+  </div>
+  <div class="contacts-grid">
+    <div class="contacts-header-row">
+      <div class="contacts-col-label">Name</div>
+      <div class="contacts-col-label">Organization</div>
+      <div class="contacts-col-label">Type</div>
+      <div class="contacts-col-label">Status</div>
+      <div class="contacts-col-label">Email</div>
+      <div class="contacts-col-label">Last Contacted</div>
+      <div class="contacts-col-label"></div>
+    </div>
+    <div id="contacts-list"><div style="padding:20px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">Loading contacts…</div></div>
+  </div>
+</div>
+
+<!-- ── Contact Add / Edit Modal ──────────────────────────────────────────── -->
+<div class="contact-modal-overlay" id="contact-modal-overlay" onclick="closeContactModal()"></div>
+<div class="contact-modal" id="contact-modal">
+  <div class="modal-header">
+    <div class="modal-title" id="modal-title">New Contact</div>
+    <button class="modal-close" onclick="closeContactModal()">×</button>
+  </div>
+  <div class="modal-section">Basic Information</div>
+  <div class="modal-grid">
+    <div class="modal-field"><label class="modal-label">First Name *</label><input class="modal-input" id="cf-first_name" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Last Name *</label><input class="modal-input" id="cf-last_name" type="text"></div>
+    <div class="modal-field full"><label class="modal-label">Organization / Company</label><input class="modal-input" id="cf-organization" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Email</label><input class="modal-input" id="cf-email" type="email"></div>
+    <div class="modal-field"><label class="modal-label">Phone</label><input class="modal-input" id="cf-phone" type="tel"></div>
+    <div class="modal-field full"><label class="modal-label">Street Address</label><input class="modal-input" id="cf-address" type="text"></div>
+    <div class="modal-field"><label class="modal-label">City, State, ZIP</label><input class="modal-input" id="cf-city_state_zip" type="text" placeholder="LaBelle, FL 33935"></div>
+    <div class="modal-field"><label class="modal-label">Contact Type</label>
+      <select class="modal-select" id="cf-contact_type">
+        <option value="">— Select —</option>
+        <option>Board Member</option><option>City Official</option><option>County Official</option>
+        <option>State/Federal Official</option><option>Vendor</option><option>Sponsor</option>
+        <option>Donor</option><option>Media</option><option>Community Partner</option>
+        <option>Volunteer</option><option>Grant Contact</option><option>Business Owner</option>
+        <option>Resident</option><option>Other</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-section">LDRC Relationship</div>
+  <div class="modal-grid">
+    <div class="modal-field full"><label class="modal-label">LDRC Involvement</label><input class="modal-input" id="cf-ldrc_involvement" type="text" placeholder="e.g. Board Member 2025, Committee Chair…"></div>
+    <div class="modal-field"><label class="modal-label">Status</label>
+      <select class="modal-select" id="cf-status">
+        <option>Active</option><option>Inactive</option><option>Prospect</option><option>VIP</option><option>Deceased</option>
+      </select>
+    </div>
+    <div class="modal-field"><label class="modal-label">Last Contacted</label><input class="modal-input" id="cf-last_contacted" type="date"></div>
+    <div class="modal-field"><label class="modal-label">Preferred Contact</label>
+      <select class="modal-select" id="cf-preferred_contact">
+        <option value="">—</option><option>Email</option><option>Phone</option><option>Text</option><option>Facebook</option><option>In Person</option>
+      </select>
+    </div>
+    <div class="modal-field"><label class="modal-label">Do Not Contact</label>
+      <select class="modal-select" id="cf-do_not_contact">
+        <option>No</option><option>Yes - Email</option><option>Yes - Phone</option><option>Yes - All</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-section">Social Media</div>
+  <div class="modal-grid">
+    <div class="modal-field"><label class="modal-label">Facebook</label><input class="modal-input" id="cf-facebook" type="text"></div>
+    <div class="modal-field"><label class="modal-label">Instagram</label><input class="modal-input" id="cf-instagram" type="text"></div>
+    <div class="modal-field full"><label class="modal-label">LinkedIn</label><input class="modal-input" id="cf-linkedin" type="text"></div>
+  </div>
+  <div class="modal-section">Notes</div>
+  <div class="modal-grid">
+    <div class="modal-field full"><label class="modal-label">Relationship Notes</label><textarea class="modal-textarea" id="cf-relationship_notes"></textarea></div>
+    <div class="modal-field full"><label class="modal-label">Action Items</label><textarea class="modal-textarea" id="cf-action_items"></textarea></div>
+    <div class="modal-field full"><label class="modal-label">General Notes</label><textarea class="modal-textarea" id="cf-general_notes"></textarea></div>
+  </div>
+  <div class="modal-actions">
+    <button class="mbtn danger" id="modal-delete-btn" onclick="deleteContact()" style="display:none;margin-right:auto;">Delete</button>
+    <button class="mbtn today" onclick="markContactedToday()">✓ Contacted Today</button>
+    <button class="mbtn secondary" onclick="closeContactModal()">Cancel</button>
+    <button class="mbtn primary" onclick="saveContact()">Save Contact</button>
+  </div>
+</div>
+
 <div id="jane-chat-panel" style="display:none;background:var(--surface);border-top:1px solid var(--border-med);padding:0 28px 0;max-height:320px;overflow-y:auto;"></div>
 <div class="jane-bar">
   <div class="jane-avatar">J</div>
@@ -218,11 +366,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 </div>
 <script>
 const SB='https://fzyvfdlmfeycntkjbshc.supabase.co';
-const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eXZmZGxtZmV5Y250a2pic2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTYyNjEsImV4cCI6MjA4NzY5MjI2MX0.Ez6ZVG06kPsU-R00yuqXS_MU2K4akEweB5wtwja_pKo';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eXZmZGxtZmV5Y250a2pic2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTYyNjEsImV4cCI6MjA4NzI5MjI2MX0.Ez6ZVG06kPsU-R00yuqXS_MU2K4akEweB5wtwja_pKo';
 const H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
 async function get(t,p){const r=await fetch(`${SB}/rest/v1/${t}?${p}`,{headers:H});return r.json();}
 async function patch(t,id,b){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify(b)});}
-const cats={'ldrc':{bg:'var(--gold-light)',tx:'var(--gold)'},'grants':{bg:'var(--green-light)',tx:'var(--green)'},'realty':{bg:'#f4f2ee',tx:'#8a8078'},'jane':{bg:'var(--green-light)',tx:'var(--green-mid)'},'urgent':{bg:'var(--red-light)',tx:'var(--red)'},'personal':{bg:'#f0eaf8',tx:'#7a5a9a'}};
+async function post(t,b){const r=await fetch(`${SB}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(b)});return r.json();}
+async function del(t,id){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H});}
+const cats={'ldrc':{bg:'var(--gold-light)',tx:'var(--gold)'},'grants':{bg:'var(--green-light)',tx:'var(--green)'},'realty':{bg:'#f4f2ee',tx:'#8a8078'},"jane":{bg:'var(--green-light)',tx:'var(--green-mid)'},'urgent':{bg:'var(--red-light)',tx:'var(--red)'},'personal':{bg:'#f0eaf8',tx:'#7a5a9a'}};
 function cs(c){const x=cats[c.toLowerCase()]||{bg:'#f0f0ee',tx:'#888'};return `background:${x.bg};color:${x.tx};`;}
 function dc(c){const x=cats[c.toLowerCase()];return x?x.tx:'#8a8078';}
 function renderTasks(tasks){
@@ -296,10 +446,96 @@ document.querySelectorAll('.nav-tab').forEach(tab=>{
     document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
     const name=tab.textContent.trim().toLowerCase();
-    document.getElementById('main-body').style.display=name==='jane'?'none':'grid';
+    document.getElementById('main-body').style.display=(name==='jane'||name==='contacts')?'none':'grid';
     document.getElementById('jane-page').style.display=name==='jane'?'flex':'none';
+    document.getElementById('contacts-page').style.display=name==='contacts'?'flex':'none';
+    if(name==='contacts')loadContacts();
   });
 });
+
+// ── Contacts ──────────────────────────────────────────────────────────────
+let allContacts=[];
+let currentContactId=null;
+const CF_IDS=['first_name','last_name','organization','email','phone','address','city_state_zip','contact_type','ldrc_involvement','status','last_contacted','preferred_contact','do_not_contact','facebook','instagram','linkedin','relationship_notes','action_items','general_notes'];
+
+async function loadContacts(){
+  const data=await get('contacts','order=last_name.asc&limit=500');
+  allContacts=Array.isArray(data)?data:[];
+  renderContacts(allContacts);
+}
+
+function statusStyle(s){
+  const m={Active:'background:var(--green-light);color:var(--green);',VIP:'background:var(--gold-light);color:var(--gold);',Inactive:'background:#f0f0ee;color:#888;',Prospect:'background:#f0eaf8;color:#7a5a9a;',Deceased:'background:#f0f0ee;color:#aaa;'};
+  return m[s]||'background:#f0f0ee;color:#888;';
+}
+
+function renderContacts(list){
+  const el=document.getElementById('contacts-list');
+  document.getElementById('contacts-count-label').textContent=`${list.length} contact${list.length!==1?'s':''}`;
+  if(!list.length){el.innerHTML='<div style="padding:20px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">No contacts found.</div>';return;}
+  el.innerHTML=list.map(c=>{
+    const init=((c.first_name||'')[0]||'')+((c.last_name||'')[0]||'');
+    const lc=c.last_contacted?new Date(c.last_contacted+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+    const rowData=encodeURIComponent(JSON.stringify(c));
+    return `<div class="contact-row" onclick="openContactModal(JSON.parse(decodeURIComponent('${rowData}')))">
+      <div class="contact-name-cell"><div class="contact-initials">${init.toUpperCase()}</div><div><div class="contact-name">${c.first_name||''} ${c.last_name||''}</div><div class="contact-sub">${c.ldrc_involvement||''}</div></div></div>
+      <div class="contact-cell">${c.organization||'—'}</div>
+      <div><span class="contact-badge" style="background:var(--green-light);color:var(--green);">${c.contact_type||'—'}</span></div>
+      <div><span class="contact-badge" style="${statusStyle(c.status)}">${c.status||'—'}</span></div>
+      <div class="contact-cell">${c.email||'—'}</div>
+      <div class="contact-cell">${lc}</div>
+      <div class="contact-edit-link">Edit</div>
+    </div>`;
+  }).join('');
+}
+
+function filterContacts(){
+  const q=document.getElementById('contacts-search').value.toLowerCase();
+  const type=document.getElementById('contacts-filter-type').value;
+  const status=document.getElementById('contacts-filter-status').value;
+  let list=allContacts;
+  if(q)list=list.filter(c=>`${c.first_name||''} ${c.last_name||''} ${c.organization||''} ${c.email||''} ${c.ldrc_involvement||''}`.toLowerCase().includes(q));
+  if(type)list=list.filter(c=>c.contact_type===type);
+  if(status)list=list.filter(c=>c.status===status);
+  renderContacts(list);
+}
+
+function openContactModal(c){
+  currentContactId=c?c.id:null;
+  document.getElementById('modal-title').textContent=c?(`${c.first_name||''} ${c.last_name||''}`.trim()||'Edit Contact'):'New Contact';
+  document.getElementById('modal-delete-btn').style.display=c?'block':'none';
+  CF_IDS.forEach(k=>{const el=document.getElementById('cf-'+k);if(el)el.value=(c&&c[k]!=null)?c[k]:'';});
+  document.getElementById('contact-modal-overlay').style.display='block';
+  document.getElementById('contact-modal').style.display='block';
+}
+
+function closeContactModal(){
+  document.getElementById('contact-modal-overlay').style.display='none';
+  document.getElementById('contact-modal').style.display='none';
+  currentContactId=null;
+}
+
+function markContactedToday(){
+  document.getElementById('cf-last_contacted').value=new Date().toISOString().split('T')[0];
+}
+
+async function saveContact(){
+  const body={};
+  CF_IDS.forEach(k=>{const el=document.getElementById('cf-'+k);if(el)body[k]=el.value||null;});
+  if(!body.first_name||!body.last_name){alert('First and last name are required.');return;}
+  if(currentContactId){await patch('contacts',currentContactId,body);}
+  else{await post('contacts',body);}
+  closeContactModal();
+  await loadContacts();
+}
+
+async function deleteContact(){
+  if(!currentContactId)return;
+  if(!confirm('Delete this contact? This cannot be undone.'))return;
+  await del('contacts',currentContactId);
+  closeContactModal();
+  await loadContacts();
+}
 
 // Jane chat
 const chatPanel=document.getElementById('jane-chat-panel');
