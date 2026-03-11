@@ -27,6 +27,37 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .nav-tab{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);padding:13px 16px;border-bottom:2px solid transparent;cursor:pointer;transition:color 0.2s,border-color 0.2s;margin-bottom:-1px;}
 .nav-tab:hover{color:var(--green-mid);}
 .nav-tab.active{color:var(--green);border-bottom-color:var(--green);}
+.forecast-strip{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;gap:6px;overflow-x:auto;}
+.forecast-day{flex:1;min-width:80px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:default;transition:box-shadow 0.2s;}
+.forecast-day.today{border-color:var(--green);background:var(--green-light);}
+.forecast-day.has-event{box-shadow:0 0 0 1.5px var(--gold);}
+.forecast-day-name{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);}
+.forecast-day.today .forecast-day-name{color:var(--green);}
+.forecast-day-num{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text-h);line-height:1;}
+.forecast-day.today .forecast-day-num{color:var(--green);}
+.forecast-event-chip{font-size:9px;font-weight:700;color:var(--gold);background:var(--gold-light);border-radius:8px;padding:2px 7px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90px;}
+.forecast-event-chip.ldrc{color:var(--green);background:var(--green-light);}
+.forecast-event-chip.urgent{color:var(--red);background:var(--red-light);}
+.forecast-empty{font-size:9px;color:var(--text-faint);}
+.jane-page{display:none;flex:1;flex-direction:column;padding:28px;gap:18px;max-width:820px;margin:0 auto;width:100%;}
+.jane-page-header{font-family:'Playfair Display',serif;font-size:22px;color:var(--text-h);}
+.jane-page-header em{font-style:italic;color:var(--green);}
+.jane-page-sub{font-size:12px;color:var(--text-muted);margin-top:4px;}
+.jane-full-chat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);flex:1;display:flex;flex-direction:column;min-height:420px;}
+.jane-full-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;}
+.jane-full-message{display:flex;gap:12px;align-items:flex-start;}
+.jane-full-avatar{flex-shrink:0;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+.jane-full-avatar.jane-av{background:var(--green);color:#fff;font-family:'Playfair Display',serif;font-style:italic;}
+.jane-full-avatar.you-av{background:var(--gold-light);color:var(--gold);}
+.jane-full-text{flex:1;font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;}
+.jane-full-text.jane-voice{font-family:'Playfair Display',serif;font-style:italic;}
+.jane-full-input-row{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;}
+.jane-full-input{flex:1;background:var(--bg);border:1px solid var(--border-med);border-radius:24px;padding:10px 18px;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.jane-full-input:focus{border-color:var(--green);}
+.jane-full-send{background:var(--green);color:#fff;border:none;border-radius:24px;padding:10px 22px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.jane-shortcuts-row{display:flex;gap:8px;flex-wrap:wrap;}
+.jane-sc{font-size:10px;font-weight:700;color:var(--green);background:var(--green-light);border:1px solid rgba(45,90,61,0.18);border-radius:14px;padding:6px 14px;cursor:pointer;transition:all 0.2s;}
+.jane-sc:hover{background:var(--green);color:#fff;}
 .body{flex:1;padding:24px 28px;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto auto 1fr;gap:18px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
 .card-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
@@ -70,12 +101,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .grant-amount{margin-left:auto;text-align:right;}
 .grant-amount-val{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--green);}
 .grant-deadline{font-size:10px;color:var(--text-faint);margin-top:2px;}
-.grant-deadline.soon{color:var(--red);font-weight:700;}
+.grant-deadline.soon}color:var(--red);font-weight:700;}
 .log-card{grid-column:2;grid-row:3;align-self:start;}
 .log-body{padding:8px 0;}
 .log-item{display:flex;gap:12px;padding:9px 18px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text);}
 .log-item:last-child{border-bottom:none;}
-.log-time{font-size:10px;font-weight:700;color:var(--text-faint);white-space:nowrap;margin-top:2px;min-width:44px;}
+.log-time{font-size:10px;font-weight:700;color:var(--text-faint);white-space:nowraw;margin-top:2px;min-width:44px;}
 .jane-bar{background:var(--surface);border-top:1px solid var(--border-med);padding:14px 28px;display:flex;align-items:center;gap:12px;}
 .jane-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:#fff;flex-shrink:0;}
 .jane-input-wrap{flex:1;}
@@ -108,7 +139,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   <div class="nav-tab">Reports</div>
   <div class="nav-tab">Realty</div>
 </nav>
-<div class="body">
+<div class="forecast-strip" id="forecast-strip"></div>
+<div class="body" id="main-body">
   <div class="card tasks-card">
     <div class="card-header">
       <div class="card-title">Today's Tasks</div>
@@ -139,9 +171,35 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
     <div class="card-header"><div class="card-title">Grant Pipeline</div><div class="card-action">View all</div></div>
     <div class="grant-body" id="grants-body"><div style="padding:16px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">Loading grants…</div></div>
   </div>
-  <div class="card log-card">
+  <div clas="card log-card">
     <div class="card-header"><div class="card-title">Recent Activity</div></div>
     <div class="log-body" id="logs-body"><div style="padding:16px 18px;font-size:12px;color:var(--text-faint);font-style:italic;">Loading activity…</div></div>
+  </div>
+</div>
+[div class="jane-page" id="jane-page">
+  <div>
+    <div class="jane-page-header">Good morning, <em>Jerika.</em> How can I help you today?</div>
+    <div class="jane-page-sub">I have access to your tasks, grants, events, and Gmail. Tell me what you need.</div>
+  </div>
+  <div class="jane-shortcuts-row">
+    <div class="jane-sc" onclick="janeFullAsk('Give me my full morning briefing')">☀️ Morning briefing</div>
+    <div class="jane-sc" onclick="janeFullAsk('What emails need my attention today?')">📬 Triage inbox</div>
+    <div class="jane-sc" onclick="janeFullAsk('What grants should I be focused on right now?')">💰 Grant status</div>
+    <div class="jane-sc" onclick="janeFullAsk('Draft a professional follow-up email for me')">✍�️ Draft email</div>
+    <div class="jane-sc" onclick="janeFullAsk('What decisions do I need to make this week?')">🎯 Decisions needed</div>
+    <div class="jane-sc" onclick="janeFullAsk('Help me prepare for my next meeting')">📋 Meeting prep</div>
+  </div>
+  <div class="jane-full-chat">
+    <div class="jane-full-messages" id="jane-full-messages">
+      <div class="jane-full-message">
+        <div class="jane-full-avatar jane-av">J</div>
+        <div class="jane-full-text jane-voice">I'm here, Jerika. You have 20 open tasks, one meeting Thursday at City Hall, and your inbox is waiting. Where do you want to start?</div>
+      </div>
+    </div>
+    <div class="jane-full-input-row">
+      <input class="jane-full-input" id="jane-full-input" placeholder="Ask Jane anything…" type="text">
+      <button class="jane-full-send" onclick="janeFullAsk()">Send</button>
+    </div>
   </div>
 </div>
 <div id="jane-chat-panel" style="display:none;background:var(--surface);border-top:1px solid var(--border-med);padding:0 28px 0;max-height:320px;overflow-y:auto;"></div>
@@ -206,7 +264,39 @@ function renderGrants(grants){
   b.innerHTML=grants.slice(0,4).map((g,i)=>{const dl=g.deadline||g.due_date||'';const dy=dl?Math.ceil((new Date(dl)-new Date())/86400000):null;const soon=dy!==null&&dy<=7;const ds=dl?(soon?`Due in ${dy} day${dy!==1?'s':''}`:`Due ${new Date(dl).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`):'';const amt=g.amount?'$'+Number(g.amount).toLocaleString():'';return `<div class="grant-item"><div class="grant-icon">${icons[i%icons.length]}</div><div><div class="grant-name">${g.name||g.title||''}</div><div class="grant-org">${g.organization||g.org||''}</div></div><div class="grant-amount"><div class="grant-amount-val">${amt}</div><div class="grant-deadline ${soon?'soon':''}">${ds}</div></div></div>`;}).join('');
 }
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');});});
+
+// Calendar forecast strip
+function renderForecast(events){
+  const strip=document.getElementById('forecast-strip');
+  const today=new Date();today.setHours(0,0,0,0);
+  const days=[];
+  for(let i=0;i<7;i++){const d=new Date(today);d.setDate(today.getDate()+i);days.push(d);}
+  const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  strip.innerHTML=days.map(d=>{
+    const iso=d.toISOString().split('T')[0];
+    const isToday=d.getTime()===today.getTime();
+    const dayEvs=Array.isArray(events)?events.filter(e=>e.date&&e.date.startsWith(iso)):[];
+    const chips=dayEvs.slice(0,2).map(e=>{
+      const c=(e.cat||'ldrc').toLowerCase();
+      const cls=c==='urgent'?'urgent':c==='ldrc'?'ldrc':'';
+      return `<div class="forecast-event-chip ${cls}" title="${e.title||''}">${(e.title||'').substring(0,14)}${(e.title||'').length>14?'…':''}</div>`;
+    }).join('');
+    return `<div class="forecast-day${isToday?' today':''}${dayEvs.length?' has-event':''}">
+      <div class="forecast-day-name">${dayNames[d.getDay()]}</div>
+      <div class="forecast-day-num">${d.getDate()}</div>
+      ${chips||'<div class="forecast-empty">—</div>'}
+    </div>`;
+  }).join('');
+}
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const name=tab.textContent.trim().toLowerCase();
+    document.getElementById('main-body').style.display=name==='jane'?'none':'grid';
+    document.getElementById('jane-page').style.display=name==='jane'?'flex':'none';
+  });
+});
 
 // Jane chat
 const chatPanel=document.getElementById('jane-chat-panel');
@@ -251,6 +341,30 @@ async function askJane(preset){
 }
 
 janeInput.addEventListener('keydown',e=>{if(e.key==='Enter')askJane();});
+
+// Jane full page chat
+const janeFullInput=document.getElementById('jane-full-input');
+const janeFullMessages=document.getElementById('jane-full-messages');
+function addFullMessage(text,role){
+  const wrap=document.createElement('div');wrap.className='jane-full-message';
+  const av=document.createElement('div');av.className=`jane-full-avatar ${role==='jane'?'jane-av':'you-av'}`;av.textContent=role==='jane'?'J':'You';
+  const msg=document.createElement('div');msg.className=`jane-full-text${role==='jane'?' jane-voice':''}`;msg.textContent=text;
+  wrap.appendChild(av);wrap.appendChild(msg);janeFullMessages.appendChild(wrap);
+  janeFullMessages.scrollTop=janeFullMessages.scrollHeight;
+}
+async function janeFullAsk(preset){
+  const msg=preset||janeFullInput.value.trim();if(!msg)return;
+  janeFullInput.value='';
+  addFullMessage(msg,'user');
+  const thinking=document.createElement('div');thinking.className='jane-full-message';
+  thinking.innerHTML='<div class="jane-full-avatar jane-av">J</div><div class="jane-full-text jane-voice" style="color:var(--text-faint)">Thinking…</div>';
+  janeFullMessages.appendChild(thinking);janeFullMessages.scrollTop=janeFullMessages.scrollHeight;
+  try{
+    const res=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+    const data=await res.json();thinking.remove();addFullMessage(data.reply||'Something went wrong.','jane');
+  }catch(e){thinking.remove();addFullMessage('I had trouble connecting. Please try again.','jane');}
+}
+janeFullInput.addEventListener('keydown',e=>{if(e.key==='Enter')janeFullAsk();});
 (async()=>{
   const today=new Date().toISOString().split('T')[0];
   const [tasks,events,logs,grants]=await Promise.all([
@@ -263,6 +377,7 @@ janeInput.addEventListener('keydown',e=>{if(e.key==='Enter')askJane();});
   renderEvents(Array.isArray(events)?events:[]);
   renderLogs(Array.isArray(logs)?logs:[]);
   renderGrants(Array.isArray(grants)?grants:[]);
+  renderForecast(Array.isArray(events)?events:[]);
 })();
 </script>
 </body>
