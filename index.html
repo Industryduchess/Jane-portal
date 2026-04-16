@@ -60,13 +60,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .jane-sc:hover{background:var(--green);color:#fff;}
 .body{flex:1;padding:24px 28px;display:grid;grid-template-columns:1fr 340px;grid-template-rows:auto auto 1fr;gap:18px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.card-header{padding:14px 18px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-header{padding:14px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .card-title{font-size:10px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:8px;}
 .card-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--green);border-radius:3px;}
 .card-action{font-size:10px;font-weight:700;color:var(--green);cursor:pointer;opacity:0.7;}
 .tasks-card{grid-column:1;grid-row:1/3;}
 .tasks-body{padding:6px 0;}
-.task-group-label{font-size:9px;font-weight:700;letter-spacing:20px;text-transform:uppercase;color:var(--text-faint);padding:10px 18px 6px;}
+.task-group-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);padding:10px 18px 6px;}
 .task{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;}
 .task:hover{background:rgba(45,90,61,0.04);}
 .task-check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border-med);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
@@ -142,7 +142,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 /* ── Contact Modal ───────────────────────────────────────────────────────── */
 .contact-modal-overlay{position:fixed;inset:0;background:rgba(30,28,24,0.48);z-index:100;display:none;}
 .contact-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);width:660px;max-width:96vw;max-height:92vh;overflow-y:auto;z-index:101;display:none;padding:28px;}
-.modal-header{display:flex;align-items:center;justify-content:space-between;morgin-bottom:22px;}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
 .modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--text-h);}
 .modal-close{font-size:24px;color:var(--text-faint);cursor:pointer;background:none;border:none;line-height:1;padding:0;}
 .modal-section{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin:16px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
@@ -159,6 +159,49 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .mbtn.secondary{background:none;color:var(--text-muted);border:1px solid var(--border-med);}
 .mbtn.danger{background:none;color:var(--red);border:1px solid rgba(200,64,64,0.3);}
 .mbtn.today{background:var(--gold);color:#fff;}
+/* ── Add Task Modal ──────────────────────────────────────────── */
+.add-task-overlay{position:fixed;inset:0;background:rgba(30,28,24,0.48);z-index:100;display:none;}
+.add-task-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border:1px solid var(--border);border-radius:var(--radius);width:440px;max-width:96vw;z-index:101;display:none;padding:28px;}
+/* ── Social Media Page ───────────────────────────────────────── */
+.social-page{display:none;flex-direction:column;flex:1;padding:28px;gap:18px;}
+.social-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.social-filter-sel{background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:8px 14px;font-family:'Lato',sans-serif;font-size:12px;color:var(--text);outline:none;cursor:pointer;}
+.social-refresh-btn{background:var(--green);color:#fff;border:none;border-radius:24px;padding:9px 20px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;}
+.social-refresh-btn:hover{opacity:0.88;}
+.social-section-title{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);padding:4px 0 10px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+.social-grid{display:flex;flex-direction:column;gap:12px;}
+.social-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.social-card-header{padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--surface);}
+.platform-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.platform-badge.facebook{background:#e7f0fd;color:#1877f2;}
+.platform-badge.instagram{background:#f5eaf8;color:#8a3ab9;}
+.platform-badge.twitter{background:#f0f0f0;color:#333;}
+.platform-badge.linkedin{background:#e8f4fb;color:#0077b5;}
+.platform-badge.foodtruck{background:var(--gold-light);color:var(--gold);}
+.status-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:20px;}
+.status-badge.pending{background:var(--gold-light);color:var(--gold);}
+.status-badge.approved{background:var(--green-light);color:var(--green);}
+.status-badge.rejected{background:var(--red-light);color:var(--red);}
+.social-schedule{font-size:11px;color:var(--text-faint);margin-left:auto;}
+.social-card-body{padding:14px 16px;}
+.social-theme{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
+.social-copy{font-size:13px;color:var(--text);line-height:1.75;white-space:pre-wrap;}
+.social-copy-edit{width:100%;min-height:100px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);line-height:1.75;background:var(--bg);border:1.5px solid var(--green);border-radius:8px;padding:8px 12px;outline:none;resize:vertical;display:none;margin-top:4px;}
+.social-accordion{padding:0 16px 10px;display:flex;gap:8px;flex-wrap:wrap;}
+.social-accordion-btn{font-size:10px;font-weight:700;color:var(--text-faint);background:none;border:1px solid var(--border-med);border-radius:12px;padding:4px 12px;cursor:pointer;transition:all 0.2s;}
+.social-accordion-btn:hover{color:var(--green);border-color:var(--green);}
+.social-accordion-content{padding:10px 16px;background:var(--bg);border-top:1px solid var(--border);font-size:12px;color:var(--text-muted);line-height:1.6;display:none;}
+.social-card-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;background:var(--surface);}
+.social-btn{padding:6px 16px;border-radius:20px;font-family:'Lato',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s;}
+.social-btn.approve{background:var(--green);color:#fff;}
+.social-btn.approve:hover{opacity:0.88;}
+.social-btn.reject{background:none;color:var(--red);border:1px solid rgba(200,64,64,0.3);}
+.social-btn.reject:hover{background:var(--red-light);}
+.social-btn.edit{background:none;color:var(--text-muted);border:1px solid var(--border-med);}
+.social-btn.edit:hover{border-color:var(--green);color:var(--green);}
+.social-btn.save{background:var(--gold);color:#fff;}
+.social-btn.save:hover{opacity:0.88;}
+.social-empty{padding:32px 20px;text-align:center;font-size:13px;color:var(--text-faint);font-style:italic;}
 </style>
 </head>
 <body>
@@ -181,13 +224,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   <div class="nav-tab">Contacts</div>
   <div class="nav-tab">Reports</div>
   <div class="nav-tab">Realty</div>
+  <div class="nav-tab">Social</div>
 </nav>
 <div class="forecast-strip" id="forecast-strip"></div>
 <div class="body" id="main-body">
   <div class="card tasks-card">
     <div class="card-header">
       <div class="card-title">Today's Tasks</div>
-      <div class="card-action">+ Add task</div>
+      <div class="card-action" onclick="openAddTask()">+ Add task</div>
     </div>
     <div class="tasks-body" id="tasks-body"><div style="padding:20px 18px;font-size:13px;color:var(--text-faint);font-style:italic;">Loading tasks…</div></div>
   </div>
@@ -239,7 +283,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
     <div class="jane-full-messages" id="jane-full-messages">
       <div class="jane-full-message">
         <div class="jane-full-avatar jane-av">J</div>
-        <div class="jane-full-text jane-voice">I'm here, Jerika. You have 20 open tasks, one meeting Thursday at City Hall, and your inbox is waiting. Where do you want to start?</div>
+        <div class="jane-full-text jane-voice">I'm here, Jerika. Ask me anything — your tasks, grants, events, or social posts. Where do you want to start?</div>
       </div>
     </div>
     <div class="jane-full-input-row">
@@ -353,6 +397,55 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   </div>
 </div>
 
+<!-- ── Add Task Modal ─────────────────────────────────────────── -->
+<div class="add-task-overlay" id="add-task-overlay" onclick="closeAddTask()"></div>
+<div class="add-task-modal" id="add-task-modal">
+  <div class="modal-header">
+    <div class="modal-title">Add Task</div>
+    <button class="modal-close" onclick="closeAddTask()">×</button>
+  </div>
+  <div class="modal-grid">
+    <div class="modal-field full"><label class="modal-label">Task *</label><input class="modal-input" id="new-task-text" type="text" placeholder="What needs to be done?"></div>
+    <div class="modal-field"><label class="modal-label">Category</label>
+      <select class="modal-select" id="new-task-cat">
+        <option value="ldrc">LDRC</option><option value="urgent">Urgent</option><option value="grants">Grants</option>
+        <option value="realty">Realty</option><option value="personal">Personal</option><option value="jane">Jane</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-actions">
+    <button class="mbtn secondary" onclick="closeAddTask()">Cancel</button>
+    <button class="mbtn primary" onclick="submitAddTask()">Add Task</button>
+  </div>
+</div>
+<!-- ── Social Media Page ───────────────────────────────────────── -->
+<div class="social-page" id="social-page">
+  <div class="social-toolbar">
+    <div>
+      <div class="jane-page-header">Social Media</div>
+      <div class="jane-page-sub" id="social-count-label">Loading posts…</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <select class="social-filter-sel" id="social-filter-platform" onchange="filterSocialPosts()">
+        <option value="">All Platforms</option>
+        <option>Facebook</option><option>Instagram</option><option>Twitter/X</option><option>LinkedIn</option>
+      </select>
+      <select class="social-filter-sel" id="social-filter-status" onchange="filterSocialPosts()">
+        <option value="">All Statuses</option>
+        <option>Pending Review</option><option>Approved</option><option>Rejected</option>
+      </select>
+      <button class="social-refresh-btn" onclick="loadSocialPosts()">↻ Refresh</button>
+    </div>
+  </div>
+  <div id="social-flyer-section" style="display:none;">
+    <div class="social-section-title">Food Truck Flyer</div>
+    <div class="social-grid" id="social-flyer-grid"></div>
+  </div>
+  <div>
+    <div class="social-section-title">This Week's Posts</div>
+    <div class="social-grid" id="social-posts-grid"><div class="social-empty">Loading posts…</div></div>
+  </div>
+</div>
 <div id="jane-chat-panel" style="display:none;background:var(--surface);border-top:1px solid var(--border-med);padding:0 28px 0;max-height:320px;overflow-y:auto;"></div>
 <div class="jane-bar">
   <div class="jane-avatar">J</div>
@@ -366,13 +459,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 </div>
 <script>
 const SB='https://fzyvfdlmfeycntkjbshc.supabase.co';
-const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eXZmZGxtZmV5Y250a2pic2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTYyNjEsImV4cCI6MjA4NzI5MjI2MX0.Ez6ZVG06kPsU-R00yuqXS_MU2K4akEweB5wtwja_pKo';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6eXZmZGxtZmV5Y250a2pic2hjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTYyNjEsImV4cCI6MjA4NzY5MjI2MX0.Ez6ZVG06kPsU-R00yuqXS_MU2K4akEweB5wtwja_pKo';
 const H={'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
 async function get(t,p){const r=await fetch(`${SB}/rest/v1/${t}?${p}`,{headers:H});return r.json();}
 async function patch(t,id,b){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify(b)});}
 async function post(t,b){const r=await fetch(`${SB}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(b)});return r.json();}
 async function del(t,id){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H});}
-const cats={'ldrc':{bg:'var(--gold-light)',tx:'var(--gold)'},'grants':{bg:'var(--green-light)',tx:'var(--green)'},'realty':{bg:'#f4f2ee',tx:'#8a8078'},"jane":{bg:'var(--green-light)',tx:'var(--green-mid)'},'urgent':{bg:'var(--red-light)',tx:'var(--red)'},'personal':{bg:'#f0eaf8',tx:'#7a5a9a'}};
+const cats={'ldrc':{bg:'var(--gold-light)',tx:'var(--gold)'},'grants':{bg:'var(--green-light)',tx:'var(--green)'},'realty':{bg:'#f4f2ee',tx:'#8a8078'},'jane':{bg:'var(--green-light)',tx:'var(--green-mid)'},'urgent':{bg:'var(--red-light)',tx:'var(--red)'},'personal':{bg:'#f0eaf8',tx:'#7a5a9a'}};
 function cs(c){const x=cats[c.toLowerCase()]||{bg:'#f0f0ee',tx:'#888'};return `background:${x.bg};color:${x.tx};`;}
 function dc(c){const x=cats[c.toLowerCase()];return x?x.tx:'#8a8078';}
 function renderTasks(tasks){
@@ -417,6 +510,12 @@ function renderGrants(grants){
   b.innerHTML=grants.slice(0,4).map((g,i)=>{const dl=g.deadline||g.due_date||'';const dy=dl?Math.ceil((new Date(dl)-new Date())/86400000):null;const soon=dy!==null&&dy<=7;const ds=dl?(soon?`Due in ${dy} day${dy!==1?'s':''}`:`Due ${new Date(dl).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`):'';const amt=g.amount?'$'+Number(g.amount).toLocaleString():'';return `<div class="grant-item"><div class="grant-icon">${icons[i%icons.length]}</div><div><div class="grant-name">${g.name||g.title||''}</div><div class="grant-org">${g.organization||g.org||''}</div></div><div class="grant-amount"><div class="grant-amount-val">${amt}</div><div class="grant-deadline ${soon?'soon':''}">${ds}</div></div></div>`;}).join('');
 }
 document.getElementById('hdate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+(function(){
+  const h=new Date().getHours();
+  const gr=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.querySelector('.header-title').innerHTML=`${gr}, <em>Jerika</em>`;
+  document.querySelector('.jane-page-header').innerHTML=`${gr}, <em>Jerika.</em> How can I help you today?`;
+})();
 
 // Calendar forecast strip
 function renderForecast(events){
@@ -446,10 +545,15 @@ document.querySelectorAll('.nav-tab').forEach(tab=>{
     document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
     const name=tab.textContent.trim().toLowerCase();
-    document.getElementById('main-body').style.display=(name==='jane'||name==='contacts')?'none':'grid';
+    const fullPages=['jane','contacts','social'];
+    document.getElementById('main-body').style.display=fullPages.includes(name)?'none':'grid';
     document.getElementById('jane-page').style.display=name==='jane'?'flex':'none';
     document.getElementById('contacts-page').style.display=name==='contacts'?'flex':'none';
+    document.getElementById('social-page').style.display=name==='social'?'flex':'none';
+    // Hide bottom Jane bar on Jane tab (it's redundant with the full-page chat)
+    document.querySelector('.jane-bar').style.display=name==='jane'?'none':'flex';
     if(name==='contacts')loadContacts();
+    if(name==='social')loadSocialPosts();
   });
 });
 
@@ -610,7 +714,7 @@ function loadJaneHistory(){
 function clearJaneHistory(){
   try{localStorage.removeItem(CHAT_KEY);}catch(e){}
   janeFullMessages.innerHTML='';
-  addFullMessage("I'm here, Jerika. You have 20 open tasks, one meeting Thursday at City Hall, and your inbox is waiting. Where do you want to start?",'jane',false);
+  addFullMessage("I'm here, Jerika. Ask me anything — your tasks, grants, events, or social posts. Where do you want to start?",'jane',false);
 }
 
 function addFullMessage(text,role,save=true){
@@ -637,6 +741,150 @@ async function janeFullAsk(preset){
 
 janeFullInput.addEventListener('keydown',e=>{if(e.key==='Enter')janeFullAsk();});
 loadJaneHistory();
+
+// ── Add Task ──────────────────────────────────────────────────
+function openAddTask(){
+  document.getElementById('add-task-overlay').style.display='block';
+  document.getElementById('add-task-modal').style.display='block';
+  setTimeout(()=>document.getElementById('new-task-text').focus(),50);
+}
+function closeAddTask(){
+  document.getElementById('add-task-overlay').style.display='none';
+  document.getElementById('add-task-modal').style.display='none';
+  document.getElementById('new-task-text').value='';
+}
+async function submitAddTask(){
+  const text=document.getElementById('new-task-text').value.trim();
+  if(!text){document.getElementById('new-task-text').focus();return;}
+  const cat=document.getElementById('new-task-cat').value||'ldrc';
+  await post('tasks',{text,cat,done:false});
+  closeAddTask();
+  const tasks=await get('tasks','done=eq.false&order=created_at.desc&limit=20');
+  renderTasks(Array.isArray(tasks)?tasks:[]);
+}
+document.getElementById('new-task-text').addEventListener('keydown',e=>{if(e.key==='Enter')submitAddTask();});
+
+// ── Social Media Posts ────────────────────────────────────────
+let allSocialPosts=[];
+
+async function loadSocialPosts(){
+  document.getElementById('social-posts-grid').innerHTML='<div class="social-empty">Loading…</div>';
+  const data=await get('social_posts','order=created_at.desc&limit=100');
+  allSocialPosts=Array.isArray(data)?data:[];
+  const label=document.getElementById('social-count-label');
+  if(label)label.textContent=`${allSocialPosts.length} post${allSocialPosts.length!==1?'s':''}`;
+  filterSocialPosts();
+}
+
+function filterSocialPosts(){
+  const plat=document.getElementById('social-filter-platform').value;
+  const status=document.getElementById('social-filter-status').value;
+  let list=allSocialPosts;
+  if(plat)list=list.filter(p=>(p.platform||'')===(plat));
+  if(status)list=list.filter(p=>(p.status||'')===(status));
+  renderSocialPosts(list);
+}
+
+function platformClass(p){
+  const s=(p||'').toLowerCase();
+  if(s.includes('facebook'))return 'facebook';
+  if(s.includes('instagram'))return 'instagram';
+  if(s.includes('twitter'))return 'twitter';
+  if(s.includes('linkedin'))return 'linkedin';
+  return 'foodtruck';
+}
+function statusClass(s){
+  const lc=(s||'').toLowerCase();
+  if(lc.includes('approved'))return 'approved';
+  if(lc.includes('rejected'))return 'rejected';
+  return 'pending';
+}
+
+function socialCard(p){
+  const pc=platformClass(p.platform);
+  const sc=statusClass(p.status);
+  const dateStr=p.scheduled_date?new Date(p.scheduled_date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'';
+  const sched=[p.scheduled_day,dateStr,p.scheduled_time].filter(Boolean).join(' · ');
+  const isApproved=sc==='approved', isRejected=sc==='rejected';
+  const escapedCopy=(p.post_copy||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const escapedTA=(p.post_copy||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return `<div class="social-card" id="sc-${p.id}">
+    <div class="social-card-header">
+      <span class="platform-badge ${pc}">${p.platform||'Post'}</span>
+      <span class="status-badge ${sc}">${p.status||'Pending Review'}</span>
+      ${sched?`<span class="social-schedule">${sched}</span>`:''}
+    </div>
+    <div class="social-card-body">
+      ${p.theme?`<div class="social-theme">${p.theme}</div>`:''}
+      <div class="social-copy" id="copy-${p.id}">${escapedCopy}</div>
+      <textarea class="social-copy-edit" id="edit-${p.id}">${escapedTA}</textarea>
+      ${p.call_to_action?`<div style="font-size:11px;color:var(--text-faint);margin-top:10px;"><strong>CTA:</strong> ${p.call_to_action}</div>`:''}
+    </div>
+    ${(p.hashtags||p.image_prompt)?`<div class="social-accordion">
+      ${p.hashtags?`<button class="social-accordion-btn" onclick="toggleAccordion('ht-${p.id}',this)"># Hashtags</button>`:''}
+      ${p.image_prompt?`<button class="social-accordion-btn" onclick="toggleAccordion('ip-${p.id}',this)">🖼 Image Prompt</button>`:''}
+    </div>
+    ${p.hashtags?`<div class="social-accordion-content" id="ht-${p.id}">${p.hashtags}</div>`:''}
+    ${p.image_prompt?`<div class="social-accordion-content" id="ip-${p.id}">${p.image_prompt}</div>`:''}`:''
+  }
+    <div class="social-card-footer">
+      ${!isApproved?`<button class="social-btn approve" onclick="approveSocialPost('${p.id}')">✓ Approve</button>`:''}
+      ${!isRejected?`<button class="social-btn reject" onclick="rejectSocialPost('${p.id}')">✗ Reject</button>`:''}
+      <button class="social-btn edit" id="editbtn-${p.id}" onclick="toggleEditSocialPost('${p.id}')">Edit</button>
+      <button class="social-btn save" id="savebtn-${p.id}" style="display:none;" onclick="saveSocialPostEdit('${p.id}')">Save</button>
+    </div>
+  </div>`;
+}
+
+function renderSocialPosts(posts){
+  const flyers=posts.filter(p=>(p.type||'').toLowerCase().includes('food truck'));
+  const regular=posts.filter(p=>!(p.type||'').toLowerCase().includes('food truck'));
+  const flyerSection=document.getElementById('social-flyer-section');
+  const flyerGrid=document.getElementById('social-flyer-grid');
+  const postsGrid=document.getElementById('social-posts-grid');
+  if(flyers.length){flyerSection.style.display='block';flyerGrid.innerHTML=flyers.map(p=>socialCard(p)).join('');}
+  else{flyerSection.style.display='none';}
+  postsGrid.innerHTML=regular.length?regular.map(p=>socialCard(p)).join(''):'<div class="social-empty">No posts yet. Run the LDRC social media agent to generate this week\'s posts.</div>';
+}
+
+function toggleAccordion(id,btn){
+  const el=document.getElementById(id);if(!el)return;
+  const open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  btn.style.color=open?'':'var(--green)';btn.style.borderColor=open?'':'var(--green)';
+}
+
+async function approveSocialPost(id){
+  await patch('social_posts',id,{status:'Approved'});
+  const card=document.getElementById('sc-'+id);
+  if(card){card.querySelector('.status-badge').className='status-badge approved';card.querySelector('.status-badge').textContent='Approved';}
+  await loadSocialPosts();
+}
+async function rejectSocialPost(id){
+  await patch('social_posts',id,{status:'Rejected'});
+  await loadSocialPosts();
+}
+
+function toggleEditSocialPost(id){
+  const copyEl=document.getElementById('copy-'+id);
+  const editEl=document.getElementById('edit-'+id);
+  const editBtn=document.getElementById('editbtn-'+id);
+  const saveBtn=document.getElementById('savebtn-'+id);
+  const isEditing=editEl.style.display==='block';
+  copyEl.style.display=isEditing?'block':'none';
+  editEl.style.display=isEditing?'none':'block';
+  editBtn.style.display=isEditing?'inline-block':'none';
+  saveBtn.style.display=isEditing?'none':'inline-block';
+  if(!isEditing){editEl.focus();editEl.value=copyEl.textContent;}
+}
+async function saveSocialPostEdit(id){
+  const editEl=document.getElementById('edit-'+id);
+  const newText=editEl.value.trim();if(!newText)return;
+  await patch('social_posts',id,{post_copy:newText});
+  document.getElementById('copy-'+id).textContent=newText;
+  toggleEditSocialPost(id);
+}
+
 (async()=>{
   const today=new Date().toISOString().split('T')[0];
   const [tasks,events,logs,grants]=await Promise.all([

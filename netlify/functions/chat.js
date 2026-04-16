@@ -17,21 +17,25 @@ exports.handler = async function(event) {
   }
 
   // Fetch live data from Supabase
-  let tasks = [], events = [], grants = [], logs = [];
+  let tasks = [], events = [], grants = [], logs = [], socialPosts = [];
   if (SUPABASE_URL && SUPABASE_KEY) {
     const h = { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` };
     const today = new Date().toISOString().split('T')[0];
+    // End of the current week (today + 7 days)
+    const weekEnd = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
     try {
-      const [tRes, eRes, gRes, lRes] = await Promise.all([
+      const [tRes, eRes, gRes, lRes, spRes] = await Promise.all([
         fetch(`${SUPABASE_URL}/rest/v1/tasks?done=eq.false&order=created_at.desc&limit=30`, { headers: h }),
         fetch(`${SUPABASE_URL}/rest/v1/events?date=gte.${today}&order=date.asc&limit=10`, { headers: h }),
         fetch(`${SUPABASE_URL}/rest/v1/grants?order=deadline.asc&limit=10`, { headers: h }),
         fetch(`${SUPABASE_URL}/rest/v1/logs?order=created_at.desc&limit=10`, { headers: h }),
+        fetch(`${SUPABASE_URL}/rest/v1/social_posts?scheduled_date=gte.${today}&scheduled_date=lte.${weekEnd}&order=scheduled_date.asc&limit=20`, { headers: h }),
       ]);
-      tasks  = await tRes.json();
-      events = await eRes.json();
-      grants = await gRes.json();
-      logs   = await lRes.json();
+      tasks       = await tRes.json();
+      events      = await eRes.json();
+      grants      = await gRes.json();
+      logs        = await lRes.json();
+      socialPosts = await spRes.json();
     } catch(e) {
       // Continue without live data if Supabase is unavailable
     }
@@ -42,6 +46,9 @@ exports.handler = async function(event) {
   const eventList = Array.isArray(events) && events.length ? events.map(e => `- ${e.date}: ${e.title}${e.priority==='urgent'?' (URGENT)':''}`).join('\n') : 'No upcoming events.';
   const grantList = Array.isArray(grants) && grants.length ? grants.map(g => `- ${g.name} | ${g.organization||'N/A'} | $${Number(g.amount||0).toLocaleString()} | Deadline: ${g.deadline||'TBD'}`).join('\n') : 'No grants tracked.';
   const logList   = Array.isArray(logs)   && logs.length   ? logs.map(l   => `- ${l.created_at?.split('T')[0]||''}: ${l.text}`).join('\n') : 'No recent activity.';
+  const socialList = Array.isArray(socialPosts) && socialPosts.length
+    ? socialPosts.map(p => `- ${p.scheduled_day||''} ${p.scheduled_date||''} @ ${p.scheduled_time||'TBD'} | ${p.platform} | ${p.status} | Theme: ${p.theme||'N/A'}`).join('\n')
+    : 'No social posts scheduled this week.';
 
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -74,6 +81,9 @@ ${grantList}
 
 Recent Activity:
 ${logList}
+
+Social Media Schedule (this week, ${Array.isArray(socialPosts) ? socialPosts.length : 0} posts):
+${socialList}
 
 Use this data to give Jerika grounded, specific, actionable responses. Reference real tasks and deadlines by name. Prioritize what matters most today.`;
 
