@@ -217,6 +217,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .generate-btn:hover{opacity:0.88;}
 .generate-btn:disabled{opacity:0.5;cursor:not-allowed;}
 .generate-status{font-size:12px;color:var(--text-faint);font-style:italic;}
+.flyer-drop{border:2px dashed var(--border-med);border-radius:10px;padding:22px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg);margin-bottom:12px;}
+.flyer-drop:hover,.flyer-drop.dragover{border-color:var(--green);background:var(--green-light);}
+.flyer-drop-icon{font-size:28px;margin-bottom:6px;}
+.flyer-drop-label{font-size:12px;color:var(--text-faint);}
+.flyer-drop-label strong{color:var(--green);cursor:pointer;}
+.flyer-preview{display:none;position:relative;margin-bottom:12px;}
+.flyer-preview img{width:100%;max-height:220px;object-fit:contain;border-radius:8px;border:1px solid var(--border);}
+.flyer-preview-name{font-size:11px;color:var(--text-muted);margin-top:6px;font-weight:700;}
+.flyer-remove{position:absolute;top:6px;right:6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;}
+.generate-divider{display:flex;align-items:center;gap:12px;margin:6px 0 14px;color:var(--text-faint);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.generate-divider::before,.generate-divider::after{content:'';flex:1;height:1px;background:var(--border);}
 </style>
 </head>
 <body>
@@ -463,6 +474,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   <!-- ── Generate Post Panel ──────────────────────────────────── -->
   <div class="generate-panel">
     <div class="generate-panel-title">Generate a Post</div>
+    <!-- Flyer Upload -->
+    <input type="file" id="flyer-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="handleFlyerSelect(event)">
+    <div class="flyer-drop" id="flyer-drop" onclick="document.getElementById('flyer-input').click()" ondragover="flyerDragOver(event)" ondragleave="flyerDragLeave(event)" ondrop="flyerDrop(event)">
+      <div class="flyer-drop-icon">🖼️</div>
+      <div class="flyer-drop-label"><strong>Upload a flyer</strong> or drag it here</div>
+      <div class="flyer-drop-label" style="margin-top:4px;">JPG, PNG — Jane will read it and write the post automatically</div>
+    </div>
+    <div class="flyer-preview" id="flyer-preview">
+      <img id="flyer-preview-img" src="" alt="Flyer preview">
+      <div class="flyer-preview-name" id="flyer-preview-name"></div>
+      <button class="flyer-remove" onclick="removeFlyerUpload()" title="Remove">×</button>
+    </div>
+    <div class="generate-divider">or describe the post</div>
     <div class="generate-row">
       <div>
         <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">What do you want this post to be about? *</div>
@@ -919,36 +943,109 @@ function toggleEditSocialPost(id){
   saveBtn.style.display=isEditing?'none':'inline-block';
   if(!isEditing){editEl.focus();editEl.value=copyEl.textContent;}
 }
+// ── Flyer Upload Helpers ──────────────────────────────────────
+let currentFlyerFile = null;
+
+function flyerDragOver(e){e.preventDefault();document.getElementById('flyer-drop').classList.add('dragover');}
+function flyerDragLeave(e){document.getElementById('flyer-drop').classList.remove('dragover');}
+function flyerDrop(e){
+  e.preventDefault();
+  flyerDragLeave(e);
+  const file=e.dataTransfer.files[0];
+  if(file)loadFlyerPreview(file);
+}
+function handleFlyerSelect(e){const file=e.target.files[0];if(file)loadFlyerPreview(file);}
+function loadFlyerPreview(file){
+  currentFlyerFile=file;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    document.getElementById('flyer-preview-img').src=ev.target.result;
+    document.getElementById('flyer-preview-name').textContent=file.name;
+    document.getElementById('flyer-drop').style.display='none';
+    document.getElementById('flyer-preview').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+function removeFlyerUpload(){
+  currentFlyerFile=null;
+  document.getElementById('flyer-input').value='';
+  document.getElementById('flyer-preview').style.display='none';
+  document.getElementById('flyer-drop').style.display='block';
+  document.getElementById('flyer-preview-img').src='';
+}
+
 async function generatePost(){
   const topic=document.getElementById('gen-topic').value.trim();
-  if(!topic){document.getElementById('gen-topic').focus();return;}
   const platform=document.getElementById('gen-platform').value;
   const additionalContext=document.getElementById('gen-context').value.trim();
   const btn=document.getElementById('gen-btn');
   const status=document.getElementById('gen-status');
-  btn.disabled=true;
-  status.textContent='Jane is writing your post…';
-  try{
-    const res=await fetch('/.netlify/functions/generate-post',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({topic,platform,additionalContext})
-    });
-    const data=await res.json();
-    if(!res.ok||data.error){status.textContent='Something went wrong. Try again.';btn.disabled=false;return;}
-    // Clear form
-    document.getElementById('gen-topic').value='';
-    document.getElementById('gen-context').value='';
-    status.textContent='✓ Post generated and saved as Pending Review!';
-    setTimeout(()=>{status.textContent='';},4000);
-    // Refresh posts
-    await loadSocialPosts();
-    // Scroll to top of posts
-    document.getElementById('social-posts-grid').scrollIntoView({behavior:'smooth',block:'start'});
-  }catch(e){
-    status.textContent='Connection error. Try again.';
+
+  // Require either a flyer or a topic
+  if(!currentFlyerFile && !topic){
+    document.getElementById('gen-topic').focus();
+    status.textContent='Upload a flyer or describe what you want to post about.';
+    return;
   }
-  btn.disabled=false;
+
+  btn.disabled=true;
+
+  if(currentFlyerFile){
+    // ── Flyer path ──────────────────────────────────────────
+    status.textContent='Uploading flyer to Drive and reading it with AI…';
+    const reader=new FileReader();
+    reader.onload=async ev=>{
+      try{
+        const dataUrl=ev.target.result;
+        const base64=dataUrl.split(',')[1];
+        const res=await fetch('/.netlify/functions/upload-flyer',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            fileData:base64,
+            fileName:currentFlyerFile.name,
+            fileType:currentFlyerFile.type,
+            platform,
+            additionalContext
+          })
+        });
+        const data=await res.json();
+        if(!res.ok||data.error){status.textContent='Something went wrong: '+(data.error||'Try again.');btn.disabled=false;return;}
+        removeFlyerUpload();
+        document.getElementById('gen-topic').value='';
+        document.getElementById('gen-context').value='';
+        status.textContent='✓ Flyer uploaded to Drive and post generated!';
+        setTimeout(()=>{status.textContent='';},5000);
+        await loadSocialPosts();
+        document.getElementById('social-posts-grid').scrollIntoView({behavior:'smooth',block:'start'});
+      }catch(e){
+        status.textContent='Connection error. Try again.';
+      }
+      btn.disabled=false;
+    };
+    reader.readAsDataURL(currentFlyerFile);
+  } else {
+    // ── Text-only path ──────────────────────────────────────
+    status.textContent='Jane is writing your post…';
+    try{
+      const res=await fetch('/.netlify/functions/generate-post',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({topic,platform,additionalContext})
+      });
+      const data=await res.json();
+      if(!res.ok||data.error){status.textContent='Something went wrong. Try again.';btn.disabled=false;return;}
+      document.getElementById('gen-topic').value='';
+      document.getElementById('gen-context').value='';
+      status.textContent='✓ Post generated and saved as Pending Review!';
+      setTimeout(()=>{status.textContent='';},4000);
+      await loadSocialPosts();
+      document.getElementById('social-posts-grid').scrollIntoView({behavior:'smooth',block:'start'});
+    }catch(e){
+      status.textContent='Connection error. Try again.';
+    }
+    btn.disabled=false;
+  }
 }
 
 async function saveSocialPostEdit(id){
