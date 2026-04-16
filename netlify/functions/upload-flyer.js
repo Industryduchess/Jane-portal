@@ -9,7 +9,7 @@ exports.handler = async function(event) {
   const GOOGLE_CLIENT_ID   = process.env.GOOGLE_CLIENT_ID;
   const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
   const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
-  const DRIVE_FOLDER_ID    = process.env.GOOGLE_DRIVE_FOLDER_ID || '114GgytSLDuiJ6NSqsJRNhr41x4dh2WY2';
+  const DRIVE_FOLDER_ID    = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
   let body;
   try { body = JSON.parse(event.body || '{}'); }
