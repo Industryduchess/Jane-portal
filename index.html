@@ -202,6 +202,21 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .social-btn.save{background:var(--gold);color:#fff;}
 .social-btn.save:hover{opacity:0.88;}
 .social-empty{padding:32px 20px;text-align:center;font-size:13px;color:var(--text-faint);font-style:italic;}
+/* ── Generate Post Panel ─────────────────────────────────────── */
+.generate-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:8px;}
+.generate-panel-title{font-size:10px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.generate-panel-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--green);border-radius:3px;}
+.generate-row{display:grid;grid-template-columns:1fr 200px;gap:12px;margin-bottom:12px;}
+.generate-textarea{width:100%;min-height:80px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-med);border-radius:8px;padding:10px 14px;outline:none;resize:vertical;line-height:1.6;transition:border-color 0.2s;}
+.generate-textarea:focus{border-color:var(--green);}
+.generate-context{width:100%;min-height:80px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);background:var(--bg);border:1px solid var(--border-med);border-radius:8px;padding:10px 14px;outline:none;resize:vertical;line-height:1.6;transition:border-color 0.2s;}
+.generate-context:focus{border-color:var(--green);}
+.generate-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.generate-platform-sel{background:var(--card);border:1px solid var(--border-med);border-radius:24px;padding:8px 14px;font-family:'Lato',sans-serif;font-size:12px;color:var(--text);outline:none;cursor:pointer;}
+.generate-btn{background:var(--green);color:#fff;border:none;border-radius:24px;padding:10px 24px;font-family:'Lato',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;}
+.generate-btn:hover{opacity:0.88;}
+.generate-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.generate-status{font-size:12px;color:var(--text-faint);font-style:italic;}
 </style>
 </head>
 <body>
@@ -444,6 +459,33 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   <div>
     <div class="social-section-title">This Week's Posts</div>
     <div class="social-grid" id="social-posts-grid"><div class="social-empty">Loading posts…</div></div>
+  </div>
+  <!-- ── Generate Post Panel ──────────────────────────────────── -->
+  <div class="generate-panel">
+    <div class="generate-panel-title">Generate a Post</div>
+    <div class="generate-row">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">What do you want this post to be about? *</div>
+        <textarea class="generate-textarea" id="gen-topic" placeholder="e.g. The Spring Festival is April 25th at Barron Park. There will be live music, food trucks, and vendor booths. Free admission."></textarea>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Platform</div>
+        <select class="generate-platform-sel" id="gen-platform" style="width:100%;border-radius:8px;padding:10px 14px;">
+          <option>Facebook</option>
+          <option>Instagram</option>
+          <option>Twitter/X</option>
+          <option>LinkedIn</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px;">Additional context <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional — flyer details, date changes, tone notes…)</span></div>
+      <textarea class="generate-context" id="gen-context" placeholder="e.g. This is a correction post — the date changed from April 20 to April 25. Keep it positive and reassuring." style="min-height:60px;"></textarea>
+    </div>
+    <div class="generate-controls">
+      <button class="generate-btn" id="gen-btn" onclick="generatePost()">✦ Generate Post</button>
+      <span class="generate-status" id="gen-status"></span>
+    </div>
   </div>
 </div>
 <div id="jane-chat-panel" style="display:none;background:var(--surface);border-top:1px solid var(--border-med);padding:0 28px 0;max-height:320px;overflow-y:auto;"></div>
@@ -877,6 +919,38 @@ function toggleEditSocialPost(id){
   saveBtn.style.display=isEditing?'none':'inline-block';
   if(!isEditing){editEl.focus();editEl.value=copyEl.textContent;}
 }
+async function generatePost(){
+  const topic=document.getElementById('gen-topic').value.trim();
+  if(!topic){document.getElementById('gen-topic').focus();return;}
+  const platform=document.getElementById('gen-platform').value;
+  const additionalContext=document.getElementById('gen-context').value.trim();
+  const btn=document.getElementById('gen-btn');
+  const status=document.getElementById('gen-status');
+  btn.disabled=true;
+  status.textContent='Jane is writing your post…';
+  try{
+    const res=await fetch('/.netlify/functions/generate-post',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({topic,platform,additionalContext})
+    });
+    const data=await res.json();
+    if(!res.ok||data.error){status.textContent='Something went wrong. Try again.';btn.disabled=false;return;}
+    // Clear form
+    document.getElementById('gen-topic').value='';
+    document.getElementById('gen-context').value='';
+    status.textContent='✓ Post generated and saved as Pending Review!';
+    setTimeout(()=>{status.textContent='';},4000);
+    // Refresh posts
+    await loadSocialPosts();
+    // Scroll to top of posts
+    document.getElementById('social-posts-grid').scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){
+    status.textContent='Connection error. Try again.';
+  }
+  btn.disabled=false;
+}
+
 async function saveSocialPostEdit(id){
   const editEl=document.getElementById('edit-'+id);
   const newText=editEl.value.trim();if(!newText)return;
