@@ -201,6 +201,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
 .social-btn.edit:hover{border-color:var(--green);color:var(--green);}
 .social-btn.save{background:var(--gold);color:#fff;}
 .social-btn.save:hover{opacity:0.88;}
+.social-btn.canva{background:none;color:#7c3aed;border:1px solid rgba(124,58,237,0.3);}
+.social-btn.canva:hover{background:rgba(124,58,237,0.08);border-color:#7c3aed;}
+.social-btn.canva:disabled{opacity:0.5;cursor:not-allowed;}
+/* ── Toast ─────────────────────────────────────────────────── */
+.jane-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1c18;color:#fff;font-size:13px;font-weight:600;padding:12px 24px;border-radius:24px;opacity:0;transition:opacity 0.25s,transform 0.25s;z-index:9999;white-space:nowrap;pointer-events:none;}
+.jane-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .social-empty{padding:32px 20px;text-align:center;font-size:13px;color:var(--text-faint);font-style:italic;}
 /* ── Generate Post Panel ─────────────────────────────────────── */
 .generate-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:8px;}
@@ -475,16 +481,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);min-height:100vh;display
   <div class="generate-panel">
     <div class="generate-panel-title">Generate a Post</div>
     <!-- Flyer Upload -->
-    <input type="file" id="flyer-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="handleFlyerSelect(event)">
+    <input type="file" id="flyer-input" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="handleFlyerSelect(event)" multiple>
     <div class="flyer-drop" id="flyer-drop" onclick="document.getElementById('flyer-input').click()" ondragover="flyerDragOver(event)" ondragleave="flyerDragLeave(event)" ondrop="flyerDrop(event)">
-      <div class="flyer-drop-icon">🖼️</div>
-      <div class="flyer-drop-label"><strong>Upload a flyer</strong> or drag it here</div>
-      <div class="flyer-drop-label" style="margin-top:4px;">JPG, PNG — Jane will read it and write the post automatically</div>
+      <div class="flyer-drop-icon">📸</div>
+      <div class="flyer-drop-label"><strong>Upload image(s)</strong> or drag them here</div>
+      <div class="flyer-drop-label" style="margin-top:4px;">JPG, PNG · Jane will read them and write your post</div>
     </div>
     <div class="flyer-preview" id="flyer-preview">
-      <img id="flyer-preview-img" src="" alt="Flyer preview">
+      <div id="flyer-preview-grid" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;"></div>
       <div class="flyer-preview-name" id="flyer-preview-name"></div>
-      <button class="flyer-remove" onclick="removeFlyerUpload()" title="Remove">×</button>
+      <button class="flyer-remove" onclick="removeFlyerUpload()" title="Remove">× Remove</button>
     </div>
     <div class="generate-divider">or describe the post</div>
     <div class="generate-row">
@@ -866,7 +872,46 @@ function statusClass(s){
   return 'pending';
 }
 
+// ── Canva Flyer Generation ────────────────────────────────────
+const socialPostsMap={};
+
+async function createCanvaFlyer(id){
+  const p=socialPostsMap[id];
+  if(!p)return;
+  const btn=document.getElementById('canvabtn-'+id);
+  const orig=btn.textContent;
+  btn.textContent='⏳ Creating…';btn.disabled=true;
+  // Copy post content to clipboard as fallback
+  const brief=[p.post_copy,p.hashtags,p.call_to_action?'CTA: '+p.call_to_action:''].filter(Boolean).join('\n\n');
+  try{await navigator.clipboard.writeText(brief);}catch(_){}
+  try{
+    const res=await fetch('/.netlify/functions/create-canva-flyer',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({postId:id,postData:p})
+    });
+    const data=await res.json();
+    if(data.canvaUrl){
+      window.open(data.canvaUrl,'_blank');
+      showToast(data.hasToken?'🎨 Canva design created! Edit it in the new tab.':'🎨 Opening Canva… post content copied to clipboard!');
+    }
+  }catch(e){
+    window.open('https://www.canva.com/create/flyers/','_blank');
+    showToast('🎨 Opening Canva… post content copied to clipboard!');
+  }
+  btn.textContent=orig;btn.disabled=false;
+}
+
+function showToast(msg){
+  const t=document.createElement('div');
+  t.className='jane-toast';t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},4000);
+}
+
 function socialCard(p){
+  socialPostsMap[p.id]=p;
   const pc=platformClass(p.platform);
   const sc=statusClass(p.status);
   const dateStr=p.scheduled_date?new Date(p.scheduled_date+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'';
@@ -898,6 +943,7 @@ function socialCard(p){
       ${!isRejected?`<button class="social-btn reject" onclick="rejectSocialPost('${p.id}')">✗ Reject</button>`:''}
       <button class="social-btn edit" id="editbtn-${p.id}" onclick="toggleEditSocialPost('${p.id}')">Edit</button>
       <button class="social-btn save" id="savebtn-${p.id}" style="display:none;" onclick="saveSocialPostEdit('${p.id}')">Save</button>
+      <button class="social-btn canva" id="canvabtn-${p.id}" onclick="createCanvaFlyer('${p.id}')">🎨 Canva Flyer</button>
     </div>
   </div>`;
 }
@@ -944,34 +990,46 @@ function toggleEditSocialPost(id){
   if(!isEditing){editEl.focus();editEl.value=copyEl.textContent;}
 }
 // ── Flyer Upload Helpers ──────────────────────────────────────
-let currentFlyerFile = null;
+let currentFlyerFiles = [];
 
 function flyerDragOver(e){e.preventDefault();document.getElementById('flyer-drop').classList.add('dragover');}
 function flyerDragLeave(e){document.getElementById('flyer-drop').classList.remove('dragover');}
 function flyerDrop(e){
   e.preventDefault();
   flyerDragLeave(e);
-  const file=e.dataTransfer.files[0];
-  if(file)loadFlyerPreview(file);
+  const files=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));
+  if(files.length)loadFlyerPreviews(files);
 }
-function handleFlyerSelect(e){const file=e.target.files[0];if(file)loadFlyerPreview(file);}
-function loadFlyerPreview(file){
-  currentFlyerFile=file;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    document.getElementById('flyer-preview-img').src=ev.target.result;
-    document.getElementById('flyer-preview-name').textContent=file.name;
-    document.getElementById('flyer-drop').style.display='none';
-    document.getElementById('flyer-preview').style.display='block';
-  };
-  reader.readAsDataURL(file);
+function handleFlyerSelect(e){
+  const files=Array.from(e.target.files);
+  if(files.length)loadFlyerPreviews(files);
+}
+function loadFlyerPreviews(files){
+  currentFlyerFiles=files;
+  const grid=document.getElementById('flyer-preview-grid');
+  grid.innerHTML='';
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=document.createElement('img');
+      img.src=ev.target.result;
+      img.style.cssText='width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border);';
+      img.title=file.name;
+      grid.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('flyer-preview-name').textContent=
+    files.length===1?files[0].name:`${files.length} images selected`;
+  document.getElementById('flyer-drop').style.display='none';
+  document.getElementById('flyer-preview').style.display='block';
 }
 function removeFlyerUpload(){
-  currentFlyerFile=null;
+  currentFlyerFiles=[];
   document.getElementById('flyer-input').value='';
+  document.getElementById('flyer-preview-grid').innerHTML='';
   document.getElementById('flyer-preview').style.display='none';
   document.getElementById('flyer-drop').style.display='block';
-  document.getElementById('flyer-preview-img').src='';
 }
 
 async function generatePost(){
@@ -981,18 +1039,20 @@ async function generatePost(){
   const btn=document.getElementById('gen-btn');
   const status=document.getElementById('gen-status');
 
-  // Require either a flyer or a topic
-  if(!currentFlyerFile && !topic){
+  // Require either an image or a topic
+  if(!currentFlyerFiles.length && !topic){
     document.getElementById('gen-topic').focus();
-    status.textContent='Upload a flyer or describe what you want to post about.';
+    status.textContent='Upload an image or describe what you want to post about.';
     return;
   }
 
   btn.disabled=true;
 
-  if(currentFlyerFile){
-    // ── Flyer path ──────────────────────────────────────────
-    status.textContent='Uploading flyer to Drive and reading it with AI…';
+  if(currentFlyerFiles.length){
+    // ── Image upload path (send first image; Drive + AI vision) ─
+    const file=currentFlyerFiles[0];
+    const multiNote=currentFlyerFiles.length>1?` (using first of ${currentFlyerFiles.length} images)`:'';
+    status.textContent=`Uploading image to Drive and reading it with AI…${multiNote}`;
     const reader=new FileReader();
     reader.onload=async ev=>{
       try{
@@ -1003,8 +1063,8 @@ async function generatePost(){
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({
             fileData:base64,
-            fileName:currentFlyerFile.name,
-            fileType:currentFlyerFile.type,
+            fileName:file.name,
+            fileType:file.type,
             platform,
             userTopic: topic,
             additionalContext
@@ -1015,7 +1075,7 @@ async function generatePost(){
         removeFlyerUpload();
         document.getElementById('gen-topic').value='';
         document.getElementById('gen-context').value='';
-        status.textContent='✓ Flyer uploaded to Drive and post generated!';
+        status.textContent='✓ Image uploaded to Drive and post generated!';
         setTimeout(()=>{status.textContent='';},5000);
         await loadSocialPosts();
         document.getElementById('social-posts-grid').scrollIntoView({behavior:'smooth',block:'start'});
@@ -1024,7 +1084,7 @@ async function generatePost(){
       }
       btn.disabled=false;
     };
-    reader.readAsDataURL(currentFlyerFile);
+    reader.readAsDataURL(file);
   } else {
     // ── Text-only path ──────────────────────────────────────
     status.textContent='Jane is writing your post…';
