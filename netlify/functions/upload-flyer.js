@@ -15,7 +15,7 @@ exports.handler = async function(event) {
   try { body = JSON.parse(event.body || '{}'); }
   catch (e) { return { statusCode: 400, body: JSON.stringify({ error: 'Invalid request' }) }; }
 
-  const { fileData, fileName, fileType, platform = 'Facebook', additionalContext = '' } = body;
+  const { fileData, fileName, fileType, platform = 'Facebook', userTopic = '', additionalContext = '' } = body;
   if (!fileData || !fileName) {
     return { statusCode: 400, body: JSON.stringify({ error: 'File data and filename required' }) };
   }
@@ -187,7 +187,6 @@ exports.handler = async function(event) {
     scheduledDate.setDate(now.getDate() + delta);
     const scheduledDateStr = scheduledDate.toISOString().split('T')[0];
 
-    const topic = extractedText || 'Community announcement';
     const today = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
     const prompt = `You are a social media writer for the LaBelle Downtown Revitalization Corporation (LDRC) in LaBelle, Florida.
@@ -202,9 +201,7 @@ Max characters (body only): ${spec.max_chars}
 Hashtag count: ${spec.hashtag_count}
 TODAY: ${today}
 
-FLYER DETAILS (extracted by AI):
-${topic}
-${additionalContext ? `\nADDITIONAL NOTES FROM JERIKA:\n${additionalContext}` : ''}
+${userTopic ? `JERIKA'S INSTRUCTIONS (top priority — base the post on this):\n${userTopic}\n` : ''}${extractedText ? `\nFLYER DETAILS (extracted from image — use to supplement, not override Jerika's instructions):\n${extractedText}\n` : ''}${additionalContext ? `\nADDITIONAL NOTES:\n${additionalContext}\n` : ''}${!userTopic && !extractedText ? 'Topic: Community announcement for LaBelle, FL\n' : ''}
 
 Write a single polished, ready-to-publish social media post. Return ONLY a JSON object:
 {
